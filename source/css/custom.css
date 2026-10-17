@@ -12,7 +12,7 @@ html {
 }
 
 body {
-  cursor: url("/img/cursor.png") 16 16, auto;
+  cursor: url("/img/cursors/millennium_base.cur"), auto;
 }
 
 a,
@@ -27,14 +27,14 @@ button *,
 .navbar a,
 .pagination a,
 .social-icon a {
-  cursor: url("/img/cursor-pointer.png") 16 16, pointer;
+  cursor: url("/img/cursors/millennium_link.cur"), pointer;
 }
 
 input,
 textarea,
 select,
 [contenteditable="true"] {
-  cursor: text;
+  cursor: url("/img/cursors/millennium_text.ani"), text;
 }
 
 /* 导航栏 */
@@ -242,6 +242,15 @@ a.tag:hover {
   color: var(--alist-violet-3);
 }
 
+.alist-egg-link {
+  color: var(--alist-violet-2) !important;
+  letter-spacing: 0.06em;
+}
+
+.alist-egg-link:hover {
+  color: var(--alist-violet-3) !important;
+}
+
 .footer-sep {
   margin: 0 6px;
   opacity: 0.5;
@@ -272,13 +281,18 @@ a.tag:hover {
   position: fixed;
   inset: 0;
   z-index: 100000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  background: #07070b;
+  overflow: hidden;
+  background: #05050a;
   animation: alist-loader-failsafe 0.4s 6s forwards;
+}
+
+#alist-loader::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(circle at center, rgba(5, 5, 10, 0.08), rgba(5, 5, 10, 0.72));
+  pointer-events: none;
 }
 
 #alist-loader.is-hidden {
@@ -287,26 +301,44 @@ a.tag:hover {
   transition: opacity 0.45s ease, visibility 0.45s ease;
 }
 
-.alist-loader-ring {
-  width: 54px;
-  height: 54px;
-  border: 2px solid rgba(139, 92, 246, 0.18);
-  border-top-color: var(--alist-violet);
-  border-radius: 50%;
-  animation: alist-spin 1s linear infinite;
-  box-shadow: 0 0 34px rgba(139, 92, 246, 0.35);
+#alist-binary {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
-.alist-loader-text {
-  color: var(--alist-violet-3);
-  font-size: 12px;
-  letter-spacing: 0.55em;
-  text-indent: 0.55em;
+#alist-loader .alist-loader-brand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  color: #f5f3ff;
+  font-size: clamp(2.6rem, 9vw, 6rem);
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+  text-shadow: 0 0 50px rgba(139, 92, 246, 0.85);
+  transform: translate(-50%, -50%);
 }
 
-@keyframes alist-spin {
-  to {
-    transform: rotate(360deg);
+#alist-loader .alist-loader-sub {
+  position: absolute;
+  top: calc(50% + clamp(3rem, 10vw, 6rem));
+  left: 50%;
+  z-index: 2;
+  color: #8b5cf6;
+  font-size: 11px;
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+  animation: alist-blink 1.1s steps(2, end) infinite;
+  transform: translateX(-50%);
+}
+
+@keyframes alist-blink {
+  50% {
+    opacity: 0.25;
   }
 }
 

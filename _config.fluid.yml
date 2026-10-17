@@ -1,8 +1,8 @@
 # Fluid 主题覆盖配置
 # 只写需要改的项，其余沿用 node_modules/hexo-theme-fluid/_config.yml
 
-favicon: /img/favicon.png
-apple_touch_icon: /img/favicon.png
+favicon: /img/alist-icon.png
+apple_touch_icon: /img/alist-icon-180.png
 tab_title_separator: " · "
 
 dark_mode:
@@ -187,6 +187,8 @@ footer:
   content: |
     <span>© 2026 LI_SparrowC1</span>
     <span class="footer-sep">·</span>
+    <a class="alist-egg-link" href="/?game=1" title="小行星彩蛋：在页面里输入 alist 也可以">✦ 小行星</a>
+    <span class="footer-sep">·</span>
     <a href="https://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a>
     <i class="iconfont icon-love"></i>
     <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="noopener"><span>Fluid</span></a>
@@ -199,7 +201,6 @@ custom_css:
   - /css/custom.css
 
 custom_js:
-  - /js/loading.js
   - /js/snow-effect.js
   - /js/mouse-trail.js
   - /js/click-hearts.js

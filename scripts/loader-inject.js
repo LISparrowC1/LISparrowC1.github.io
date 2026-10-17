@@ -4,10 +4,12 @@ hexo.extend.filter.register("after_render:html", function (str) {
 
   var loader =
     '<div id="alist-loader" aria-hidden="true">' +
-    '<div class="alist-loader-ring"></div>' +
-    '<div class="alist-loader-text">ALIST</div>' +
+    '<canvas id="alist-binary"></canvas>' +
+    '<div class="alist-loader-brand">ALIST</div>' +
+    '<div class="alist-loader-sub">LOADING</div>' +
     "</div>" +
-    "<noscript><style>#alist-loader{display:none!important}</style></noscript>";
+    "<noscript><style>#alist-loader{display:none!important}</style></noscript>" +
+    '<script src="/js/binary-loader.js"></script>';
 
   return str.replace(/<body([^>]*)>/i, "<body$1>" + loader);
 });
