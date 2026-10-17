@@ -9,7 +9,8 @@ hexo.extend.filter.register("after_render:html", function (str) {
     '<div class="alist-loader-sub">LOADING</div>' +
     "</div>" +
     "<noscript><style>#alist-loader{display:none!important}</style></noscript>" +
-    '<script src="/js/binary-loader.js"></script>';
+    '<script src="/js/binary-loader.js"></script>' +
+    '<script>if(location.pathname==="/"||location.pathname==="/index.html"){document.documentElement.classList.add("alist-home")}</script>';
 
   return str.replace(/<body([^>]*)>/i, "<body$1>" + loader);
 });

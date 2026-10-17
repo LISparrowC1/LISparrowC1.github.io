@@ -92,19 +92,6 @@ select,
   text-shadow: 0 2px 30px rgba(0, 0, 0, 0.75), 0 0 60px rgba(139, 92, 246, 0.35);
 }
 
-#banner .banner-text .h2:has(#subtitle[data-typed-text])::before {
-  content: "ALIST";
-  display: block;
-  margin-bottom: 0.08em;
-  color: #f5f3ff;
-  font-size: clamp(3.2rem, 9vw, 7.5rem);
-  font-weight: 700;
-  line-height: 1.05;
-  letter-spacing: 0.18em;
-  text-indent: 0.18em;
-  text-shadow: 0 2px 40px rgba(0, 0, 0, 0.7), 0 0 80px rgba(139, 92, 246, 0.45);
-}
-
 .banner-text .subtitle {
   color: #e9e4ff !important;
   letter-spacing: 0.18em;
@@ -340,21 +327,13 @@ a.tag:hover {
   }
 }
 
-/* 雪花与鼠标拖尾 */
-#snowfall,
+/* 鼠标拖尾 */
 #rainbow-trail {
   position: fixed;
   inset: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
-}
-
-#snowfall {
-  z-index: 9997;
-}
-
-#rainbow-trail {
   z-index: 9998;
 }
 
@@ -489,7 +468,6 @@ body.snake-playing {
     letter-spacing: 0.1em;
   }
 
-  #snowfall,
   #rainbow-trail {
     display: none;
   }
@@ -510,14 +488,9 @@ body.snake-playing {
   }
 
   #alist-loader,
-  #snowfall,
   #rainbow-trail,
   .click-heart {
     display: none !important;
-  }
-
-  .alist-loader-ring {
-    animation: none;
   }
 
   * {

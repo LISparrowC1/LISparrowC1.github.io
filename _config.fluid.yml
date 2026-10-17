@@ -69,7 +69,7 @@ font:
 
 fun_features:
   typing:
-    enable: true
+    enable: false
     typeSpeed: 80
     cursorChar: "_"
     loop: false
@@ -185,6 +185,13 @@ code:
 
 footer:
   content: |
+    <span class="alist-visitors">
+      <i class="iconfont icon-user-fill"></i>
+      <span id="busuanzi_container_site_uv" style="display:none">访客 <span id="busuanzi_value_site_uv"></span></span>
+      <span class="footer-sep">·</span>
+      <span id="busuanzi_container_site_pv" style="display:none">访问 <span id="busuanzi_value_site_pv"></span></span>
+    </span>
+    <span class="footer-sep">·</span>
     <span>© 2026 LI_SparrowC1</span>
     <span class="footer-sep">·</span>
     <a href="https://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a>
@@ -197,9 +204,15 @@ footer:
 
 custom_css:
   - /css/custom.css
+  - /css/effects.css
 
 custom_js:
-  - /js/snow-effect.js
+  - /js/background-effect.js
+  - /js/home-effects.js
+  - /js/festival-effect.js
+  - /js/ripple.js
+  - /js/music-player.js
+  - /js/visitors.js
   - /js/mouse-trail.js
   - /js/click-hearts.js
   - /js/title-effect.js
