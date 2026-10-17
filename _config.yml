@@ -1,0 +1,98 @@
+# Hexo Configuration
+## Docs: https://hexo.io/docs/configuration.html
+## Source: https://github.com/hexojs/hexo/
+
+# Site
+title: ALIST
+subtitle: 无限进步
+description: 写点小工具，也做点好玩的东西。
+keywords: ALIST, LI_SparrowC1, Hexo, Fluid, 博客, 独立开发
+author: LI_SparrowC1
+language: zh-CN
+timezone: Asia/Shanghai
+
+# URL
+url: https://lisparrowc1.github.io
+root: /
+permalink: :year/:month/:day/:title/
+permalink_defaults:
+pretty_urls:
+  trailing_index: false
+  trailing_html: false
+
+# Directory
+source_dir: source
+public_dir: public
+tag_dir: tags
+archive_dir: archives
+category_dir: categories
+code_dir: downloads/code
+i18n_dir: :lang
+skip_render:
+
+# Writing
+new_post_name: :title.md
+default_layout: post
+titlecase: false
+external_link:
+  enable: true
+  field: site
+  exclude: ''
+filename_case: 0
+render_drafts: false
+post_asset_folder: false
+relative_link: false
+future: true
+syntax_highlighter: highlight.js
+highlight:
+  line_number: false
+  auto_detect: false
+  tab_replace: ''
+  wrap: true
+  hljs: false
+prismjs:
+  preprocess: true
+  line_number: false
+  tab_replace: ''
+
+# Home page setting
+index_generator:
+  path: ''
+  per_page: 8
+  order_by: -date
+
+# Category & Tag
+default_category: uncategorized
+category_map:
+tag_map:
+
+# Metadata elements
+meta_generator: true
+
+# Date / Time format
+date_format: YYYY-MM-DD
+time_format: HH:mm
+updated_option: 'mtime'
+
+# Pagination
+per_page: 8
+pagination_dir: page
+
+# Include / Exclude file(s)
+include:
+exclude:
+ignore:
+
+# Extensions
+theme: fluid
+
+# Search (hexo-generator-searchdb)
+search:
+  path: local-search.xml
+  field: post
+  content: true
+  format: html
+
+# Deployment
+deploy:
+  type: ''
