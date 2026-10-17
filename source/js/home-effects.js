@@ -35,26 +35,59 @@
     updateBanner();
   }
 
-  var quotes = [
-    "无限进步",
-    "保持好奇",
-    "把复杂的事做简单",
-    "想到就去做",
-    "慢一点也没关系",
-    "今天也要有点收获",
-    "在能力范围内做到最好",
-    "去做，然后再说"
-  ];
+  var content = {
+    quotes: [
+      "保持好奇",
+      "把复杂的事做简单",
+      "想到就去做",
+      "慢一点也没关系",
+      "今天也要有点收获",
+      "在能力范围内做到最好",
+      "去做，然后再说",
+      "把喜欢的事做久一点",
+      "把今天过成想要的样子"
+    ],
+    greetings: {
+      dawn: "夜深了，早点休息。",
+      morning: "早上好，今天也慢慢来。",
+      forenoon: "上午好，继续做点喜欢的事。",
+      noon: "中午好，记得吃饭。",
+      afternoon: "下午好，别忘记抬头看看。",
+      evening: "晚上好，写点小东西吧。",
+      night: "夜深了，早点休息。"
+    }
+  };
+
+  fetch("/data/phrases.json", { cache: "no-store" })
+    .then(function (response) {
+      return response.ok ? response.json() : null;
+    })
+    .then(function (data) {
+      if (!data) return;
+      if (Array.isArray(data.quotes) && data.quotes.length) content.quotes = data.quotes;
+      if (data.greetings && typeof data.greetings === "object") {
+        for (var key in data.greetings) {
+          if (Object.prototype.hasOwnProperty.call(data.greetings, key)) {
+            content.greetings[key] = data.greetings[key];
+          }
+        }
+      }
+    })
+    .catch(function () {
+      // Keep the built-in fallback when the data file is unavailable.
+    });
 
   function greeting() {
     var hour = new Date().getHours();
-    if (hour < 5) return "夜深了，早点休息。";
-    if (hour < 9) return "早上好，今天也慢慢来。";
-    if (hour < 12) return "上午好，继续做点喜欢的事。";
-    if (hour < 14) return "中午好，记得吃饭。";
-    if (hour < 18) return "下午好，别忘记抬头看看。";
-    if (hour < 23) return "晚上好，写点小东西吧。";
-    return "夜深了，早点休息。";
+    var key;
+    if (hour < 5) key = "dawn";
+    else if (hour < 9) key = "morning";
+    else if (hour < 12) key = "forenoon";
+    else if (hour < 14) key = "noon";
+    else if (hour < 18) key = "afternoon";
+    else if (hour < 23) key = "evening";
+    else key = "night";
+    return content.greetings[key] || "无限进步";
   }
 
   var token = 0;
@@ -91,7 +124,7 @@
   }
 
   function pickPhrase() {
-    var pool = quotes.slice();
+    var pool = content.quotes.slice();
     pool.push(greeting());
     var next = pool[Math.floor(Math.random() * pool.length)];
     if (next === current) next = pool[(pool.indexOf(next) + 1) % pool.length];

@@ -96,21 +96,37 @@ html.alist-home #banner .banner-text .h2::before {
   text-indent: 0.18em;
   text-shadow: none;
   background-image:
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.16) 0 1px, transparent 1px 9px),
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.12) 0 1px, transparent 1px 9px),
-    linear-gradient(112deg, #38bdf8 0%, #f8fafc 26%, #a78bfa 52%, #e879f9 72%, #38bdf8 100%);
-  background-size: 100% 9px, 9px 100%, 300% 100%;
+    repeating-linear-gradient(0deg, rgba(125, 211, 252, 0.17) 0 1px, transparent 1px 9px),
+    repeating-linear-gradient(90deg, rgba(196, 181, 253, 0.15) 0 1px, transparent 1px 9px),
+    linear-gradient(
+      112deg,
+      rgba(56, 189, 248, 0.52) 0%,
+      rgba(56, 189, 248, 0.12) 18%,
+      #f8fafc 42%,
+      #f8fafc 60%,
+      rgba(167, 139, 250, 0.2) 82%,
+      rgba(167, 139, 250, 0.6) 100%
+    );
+  background-size: 100% 9px, 9px 100%, 260% 100%;
   background-position: 0 0, 0 0, 0 50%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 0 26px rgba(139, 92, 246, 0.38));
-  animation: alist-title-grid 9s linear infinite;
+  animation: alist-title-grid 11s linear infinite;
 }
 
 @keyframes alist-title-grid {
-  to {
-    background-position: 0 0, 0 0, 300% 50%;
+  0% {
+    background-position: 0 0, 0 0, 0 50%;
+  }
+
+  50% {
+    background-position: 4px 9px, -4px 9px, 50% 50%;
+  }
+
+  100% {
+    background-position: 8px 18px, -8px 18px, 100% 50%;
   }
 }
 
@@ -133,31 +149,6 @@ html.alist-home #subtitle::after {
   }
 }
 
-/* 点击涟漪 */
-.alist-ripple {
-  position: fixed;
-  z-index: 9994;
-  width: 14px;
-  height: 14px;
-  margin: -7px 0 0 -7px;
-  border: 1px solid rgba(56, 189, 248, 0.62);
-  border-radius: 50%;
-  pointer-events: none;
-  animation: alist-ripple 0.68s ease-out forwards;
-}
-
-@keyframes alist-ripple {
-  from {
-    transform: scale(0.4);
-    opacity: 0.9;
-  }
-
-  to {
-    transform: scale(12);
-    opacity: 0;
-  }
-}
-
 /* 音乐播放器 */
 #alist-music {
   position: fixed;
@@ -175,6 +166,45 @@ html.alist-home #subtitle::after {
   box-shadow: 0 10px 36px rgba(0, 0, 0, 0.38);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
+}
+
+#alist-music[hidden] {
+  display: none !important;
+}
+
+#alist-music.is-unavailable {
+  opacity: 0.72;
+}
+
+#alist-music-toggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+#alist-music-switch .alist-music-switch-icon {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+#alist-music-switch.is-on {
+  color: var(--alist-violet-2) !important;
+}
+
+#alist-music-switch.is-on .alist-music-switch-icon {
+  text-shadow: 0 0 12px rgba(167, 139, 250, 0.85);
+}
+
+.alist-music-switch-mobile {
+  color: inherit;
+}
+
+.alist-music-switch-mobile.is-on {
+  color: var(--alist-violet-2) !important;
+}
+
+.alist-music-switch-mobile .alist-music-switch-icon {
+  font-size: 1.25rem;
+  line-height: 1;
 }
 
 #alist-music-toggle {

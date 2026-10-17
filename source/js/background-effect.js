@@ -29,6 +29,7 @@
   var w = 0;
   var h = 0;
   var stars = [];
+  var ripples = [];
   var raf = 0;
 
   function resize() {
@@ -59,17 +60,72 @@
     }
   }
 
+  function addRipple(x, y) {
+    ripples.push({ x: x, y: y, t: performance.now() });
+    if (ripples.length > 5) ripples.shift();
+  }
+
+  document.addEventListener(
+    "click",
+    function (event) {
+      if (event.button !== 0) return;
+      var target = event.target;
+      if (!(target instanceof Element)) return;
+      if (target.closest("#snake-layer, #alist-music, #alist-music-switch, .alist-music-switch-mobile, input, textarea, select, option")) return;
+      addRipple(event.clientX, event.clientY);
+    },
+    true
+  );
+
   function draw(now) {
     ctx.clearRect(0, 0, w, h);
     var t = now / 1000;
-    for (var i = 0; i < stars.length; i++) {
-      var s = stars[i];
-      var alpha = s.base + Math.sin(t * s.speed + s.phase) * s.amp;
+
+    for (var i = ripples.length - 1; i >= 0; i--) {
+      if ((now - ripples[i].t) / 1000 > 2.8) ripples.splice(i, 1);
+    }
+
+    for (var s = 0; s < stars.length; s++) {
+      var star = stars[s];
+      var sx = star.x;
+      var sy = star.y;
+      for (var r = 0; r < ripples.length; r++) {
+        var ripple = ripples[r];
+        var age = (now - ripple.t) / 1000;
+        if (age < 0 || age > 2.8) continue;
+        var dx = star.x - ripple.x;
+        var dy = star.y - ripple.y;
+        var dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        if (dist > 620) continue;
+        var decay = Math.exp(-dist / 280) * Math.exp(-age * 1.15);
+        var wave = Math.sin(dist * 0.055 - age * 7.5) * decay * 13;
+        sx += (dx / dist) * wave;
+        sy += (dy / dist) * wave;
+      }
+
+      var alpha = star.base + Math.sin(t * star.speed + star.phase) * star.amp;
       if (alpha < 0.05) alpha = 0.05;
       ctx.beginPath();
-      ctx.fillStyle = "rgba(" + s.color + "," + alpha.toFixed(3) + ")";
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(" + star.color + "," + alpha.toFixed(3) + ")";
+      ctx.arc(sx, sy, star.r, 0, Math.PI * 2);
       ctx.fill();
+    }
+
+    for (var k = 0; k < ripples.length; k++) {
+      var rp = ripples[k];
+      var ra = (now - rp.t) / 1000;
+      if (ra < 0 || ra > 2.8) continue;
+      var radius = ra * 190;
+      var fade = (1 - ra / 2.8) * 0.2;
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = "rgba(125,211,252," + fade.toFixed(3) + ")";
+      ctx.beginPath();
+      ctx.arc(rp.x, rp.y, radius, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.strokeStyle = "rgba(196,181,253," + (fade * 0.72).toFixed(3) + ")";
+      ctx.beginPath();
+      ctx.arc(rp.x, rp.y, radius + 10, 0, Math.PI * 2);
+      ctx.stroke();
     }
   }
 

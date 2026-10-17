@@ -210,7 +210,6 @@ custom_js:
   - /js/background-effect.js
   - /js/home-effects.js
   - /js/festival-effect.js
-  - /js/ripple.js
   - /js/music-player.js
   - /js/visitors.js
   - /js/mouse-trail.js

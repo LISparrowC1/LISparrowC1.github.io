@@ -1,0 +1,25 @@
+{
+  "default": "daily",
+  "tracks": {
+    "daily": {
+      "title": "星尘",
+      "artist": "ALIST RADIO",
+      "src": ""
+    },
+    "cny": {
+      "title": "新春",
+      "artist": "ALIST RADIO",
+      "src": ""
+    },
+    "halloween": {
+      "title": "万圣夜",
+      "artist": "ALIST RADIO",
+      "src": ""
+    },
+    "christmas": {
+      "title": "圣诞雪",
+      "artist": "ALIST RADIO",
+      "src": ""
+    }
+  }
+}
