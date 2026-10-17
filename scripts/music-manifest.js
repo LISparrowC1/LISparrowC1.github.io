@@ -61,8 +61,9 @@ async function findLyrics(file, base) {
 }
 
 async function readMetadata(file) {
-  let title = path.basename(file, path.extname(file)).trim();
-  let artist = "-";
+  const stem = path.basename(file, path.extname(file)).trim();
+  let title = "";
+  let artist = "";
   try {
     const metadata = await mm.parseFile(file, { duration: false, skipCovers: true });
     if (metadata.common.title && String(metadata.common.title).trim()) {
@@ -73,7 +74,17 @@ async function readMetadata(file) {
   } catch (error) {
     // Fall back to the filename when tags cannot be read.
   }
-  return { title, artist };
+
+  const separator = stem.lastIndexOf(" - ");
+  if (separator > 0) {
+    if (!title) title = stem.slice(0, separator).trim();
+    if (!artist) artist = stem.slice(separator + 3).trim();
+  }
+  if (!title) title = stem;
+  if (!artist) artist = "-";
+  if (artist !== "-") artist = artist.replace(/,(?=\S)/g, ", ");
+
+  return { title: title || "无", artist: artist || "-" };
 }
 
 async function addTrack(file, key, base, result) {
