@@ -242,15 +242,6 @@ a.tag:hover {
   color: var(--alist-violet-3);
 }
 
-.alist-egg-link {
-  color: var(--alist-violet-2) !important;
-  letter-spacing: 0.06em;
-}
-
-.alist-egg-link:hover {
-  color: var(--alist-violet-3) !important;
-}
-
 .footer-sep {
   margin: 0 6px;
   opacity: 0.5;
@@ -392,104 +383,68 @@ a.tag:hover {
   }
 }
 
-/* 小行星彩蛋 */
-#asteroids-overlay {
+/* 贪吃蛇彩蛋 */
+body.snake-playing {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#snake-layer {
   position: fixed;
   inset: 0;
   z-index: 100001;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  background: rgba(4, 4, 8, 0.94);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  overflow: hidden;
+  cursor: inherit;
+  touch-action: none;
 }
 
-#asteroids-panel {
-  position: relative;
-  width: min(94vw, 980px);
-}
-
-#asteroids-canvas {
-  display: block;
-  width: 100%;
-  height: auto;
-  background: #05050a;
-  border: 1px solid rgba(139, 92, 246, 0.35);
-  border-radius: 14px;
-  box-shadow: 0 0 60px rgba(139, 92, 246, 0.18);
-}
-
-.asteroids-hud {
-  position: absolute;
-  top: 12px;
-  left: 18px;
-  display: flex;
-  gap: 18px;
-  color: var(--alist-violet-3);
-  font-size: 13px;
-  letter-spacing: 0.12em;
-  pointer-events: none;
-  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.8);
-}
-
-.asteroids-hint {
-  position: absolute;
-  bottom: 12px;
-  left: 18px;
-  color: #8f8fa8;
-  font-size: 12px;
-  letter-spacing: 0.06em;
-  pointer-events: none;
-}
-
-.asteroids-close {
-  position: absolute;
-  top: 10px;
-  right: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  color: var(--alist-violet-3);
-  font-size: 16px;
-  line-height: 1;
-  background: rgba(8, 8, 12, 0.7);
-  border: 1px solid rgba(139, 92, 246, 0.4);
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.asteroids-close:hover {
-  color: #fff;
-  background: var(--alist-violet);
-}
-
-.asteroids-over {
+#snake-canvas {
   position: absolute;
   inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  color: #f5f3ff;
-  background: rgba(4, 4, 8, 0.55);
-  border-radius: 14px;
+  display: block;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
 }
 
-.asteroids-over strong {
+#snake-hud {
+  position: fixed;
+  top: 84px;
+  left: 50%;
+  z-index: 100002;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 16px;
   color: var(--alist-violet-3);
-  font-size: clamp(28px, 5vw, 54px);
-  letter-spacing: 0.16em;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  background: rgba(5, 5, 10, 0.72);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  pointer-events: none;
+  transform: translateX(-50%);
 }
 
-.asteroids-over span {
-  color: #a1a1aa;
-  letter-spacing: 0.08em;
+#snake-hud b {
+  color: #f5f3ff;
+  font-weight: 600;
+}
+
+#snake-hud.is-win {
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.45);
+}
+
+#snake-hud .snake-key {
+  color: #8f8fa8;
+}
+
+.snake-eaten {
+  visibility: hidden !important;
 }
 
 /* 响应式 */
@@ -513,6 +468,14 @@ a.tag:hover {
   #snowfall,
   #rainbow-trail {
     display: none;
+  }
+
+  #snake-hud {
+    top: 68px;
+    gap: 7px;
+    padding: 6px 11px;
+    font-size: 11px;
+    letter-spacing: 0;
   }
 }
 

@@ -187,8 +187,6 @@ footer:
   content: |
     <span>© 2026 LI_SparrowC1</span>
     <span class="footer-sep">·</span>
-    <a class="alist-egg-link" href="/?game=1" title="小行星彩蛋：在页面里输入 alist 也可以">✦ 小行星</a>
-    <span class="footer-sep">·</span>
     <a href="https://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a>
     <i class="iconfont icon-love"></i>
     <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="noopener"><span>Fluid</span></a>
@@ -205,4 +203,4 @@ custom_js:
   - /js/mouse-trail.js
   - /js/click-hearts.js
   - /js/title-effect.js
-  - /js/asteroids.js
+  - /js/snake.js
