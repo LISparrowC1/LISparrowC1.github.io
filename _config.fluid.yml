@@ -5,6 +5,10 @@ favicon: /img/alist-icon.png
 apple_touch_icon: /img/alist-icon-180.png
 tab_title_separator: " · "
 
+static_prefix:
+  bootstrap: /vendor/bootstrap/4.6.1/
+  jquery: /vendor/jquery/3.6.4/
+
 dark_mode:
   enable: true
   default: dark

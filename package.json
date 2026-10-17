@@ -22,7 +22,8 @@
     "hexo-renderer-marked": "^7.0.0",
     "hexo-renderer-stylus": "^3.0.1",
     "hexo-server": "^3.0.0",
-    "hexo-theme-fluid": "^1.9.9"
+    "hexo-theme-fluid": "^1.9.9",
+    "music-metadata": "^7.14.0"
   },
   "description": "ALIST - LI_SparrowC1's blog",
   "author": "LI_SparrowC1"

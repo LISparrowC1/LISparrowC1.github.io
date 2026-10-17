@@ -16,12 +16,30 @@
       "page.categories": "分类",
       "page.tags": "标签",
       "page.about": "关于",
+      "page.404": "页面不存在",
       "footer.visitors": "访客",
       "footer.views": "访问",
       "search.placeholder": "关键词",
+      "search.label": "搜索",
       "archives.count": "共计 {n} 篇文章",
       "post.words": "{n} 字",
       "post.minutes": "{n} 分钟",
+      "post.toc": "目录",
+      "post.prev": "上一篇",
+      "post.next": "下一篇",
+      "post.updated_prefix": "本文最后更新于",
+      "post.author": "作者",
+      "post.posted": "发布于",
+      "post.updated": "更新于",
+      "post.license": "许可协议",
+      "license.cc": "CC - 知识共享许可协议",
+      "license.by": "BY - 署名",
+      "license.sa": "SA - 相同方式共享",
+      "license.nc": "NC - 非商业性使用",
+      "license.nd": "ND - 禁止演绎",
+      "license.zero": "CC0 - 无版权",
+      "dark.light": "开灯",
+      "dark.dark": "关灯",
       "music.switch": "音乐开关",
       "music.no": "无音乐",
       "lang.switch": "切换语言"
@@ -36,12 +54,30 @@
       "page.categories": "Categories",
       "page.tags": "Tags",
       "page.about": "About",
+      "page.404": "Page not found",
       "footer.visitors": "Visitors",
       "footer.views": "Views",
       "search.placeholder": "Search",
+      "search.label": "Search",
       "archives.count": "{n} posts",
       "post.words": "{n} words",
       "post.minutes": "{n} min",
+      "post.toc": "Table of Contents",
+      "post.prev": "Previous",
+      "post.next": "Next",
+      "post.updated_prefix": "Last updated on",
+      "post.author": "Author",
+      "post.posted": "Posted on",
+      "post.updated": "Updated on",
+      "post.license": "Licensed under",
+      "license.cc": "CC - Creative Commons license",
+      "license.by": "BY - Attribution",
+      "license.sa": "SA - Share-alike",
+      "license.nc": "NC - Non-commercial",
+      "license.nd": "ND - No derivative works",
+      "license.zero": "CC0 - No Copyright",
+      "dark.light": "Light",
+      "dark.dark": "Dark",
       "music.switch": "Music",
       "music.no": "No music",
       "lang.switch": "Switch language"
@@ -112,6 +148,7 @@
     else if (path.indexOf("/categories") === 0) pageKey = "page.categories";
     else if (path.indexOf("/tags") === 0) pageKey = "page.tags";
     else if (path.indexOf("/about") === 0) pageKey = "page.about";
+    else if (path.indexOf("/404") !== -1) pageKey = "page.404";
     if (!pageKey) return;
     var heading = document.querySelector("#banner .h2");
     if (heading && !heading.querySelector("#subtitle")) heading.textContent = t(pageKey);
@@ -133,6 +170,84 @@
     if (input) input.placeholder = t("search.placeholder");
     var label = document.querySelector('label[for="local-search-input"]');
     if (label) label.textContent = t("search.placeholder");
+
+    var searchButtons = document.querySelectorAll("#search-btn a, #mobile-search-btn, a[data-target='#modalSearch']");
+    for (var i = 0; i < searchButtons.length; i++) {
+      searchButtons[i].setAttribute("aria-label", t("search.label"));
+    }
+    var mobileSearch = document.querySelector("#mobile-search-btn .mobile-grid-item span, #mobile-grid-menu a[data-target='#modalSearch'] .mobile-grid-item span");
+    if (mobileSearch) mobileSearch.textContent = t("search.label");
+  }
+
+  function translatePostUI() {
+    var tocTitle = document.querySelector("#toc .toc-header span");
+    if (tocTitle) tocTitle.textContent = t("post.toc");
+
+    var navLabels = document.querySelectorAll(".post-nav .visible-mobile");
+    for (var i = 0; i < navLabels.length; i++) {
+      var navText = (navLabels[i].textContent || "").trim();
+      if (navText === "上一篇") navLabels[i].textContent = t("post.prev");
+      else if (navText === "下一篇") navLabels[i].textContent = t("post.next");
+    }
+
+    var copyrightMap = {
+      "作者": t("post.author"),
+      "发布于": t("post.posted"),
+      "更新于": t("post.updated"),
+      "许可协议": t("post.license")
+    };
+    var copyrightLabels = document.querySelectorAll(".license-meta-item > div:first-child");
+    for (var j = 0; j < copyrightLabels.length; j++) {
+      var labelText = (copyrightLabels[j].textContent || "").trim();
+      if (copyrightMap[labelText]) copyrightLabels[j].textContent = copyrightMap[labelText];
+    }
+
+    var licenseMap = {
+      "CC - 知识共享许可协议": t("license.cc"),
+      "BY - 署名": t("license.by"),
+      "SA - 相同方式共享": t("license.sa"),
+      "NC - 非商业性使用": t("license.nc"),
+      "ND - 禁止演绎": t("license.nd"),
+      "CC0 - 无版权": t("license.zero")
+    };
+    var hints = document.querySelectorAll(".license-meta [aria-label], .license-meta [title]");
+    for (var k = 0; k < hints.length; k++) {
+      ["aria-label", "title"].forEach(function (attr) {
+        var value = hints[k].getAttribute(attr);
+        if (value && licenseMap[value]) hints[k].setAttribute(attr, licenseMap[value]);
+      });
+    }
+
+    var colorToggle = document.querySelector("#mobile-color-toggle-btn");
+    if (colorToggle) {
+      colorToggle.setAttribute("data-label-light", t("dark.light"));
+      colorToggle.setAttribute("data-label-dark", t("dark.dark"));
+    }
+    var colorButtons = document.querySelectorAll(".color-toggle-btn");
+    for (var m = 0; m < colorButtons.length; m++) {
+      colorButtons[m].setAttribute("title", t("dark.dark"));
+    }
+  }
+
+  function enDate(text) {
+    var names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    return text
+      .replace(/本文最后更新于/g, t("post.updated_prefix"))
+      .replace(/(\d{4})年(\d{1,2})月(\d{1,2})日/g, function (match, year, month, day) {
+        return names[Number(month) - 1] + " " + Number(day) + ", " + year;
+      });
+  }
+
+  function translateDates() {
+    if (lang !== "en") return;
+    var roots = document.querySelectorAll(".license-meta-date, .post-meta, .index-meta, time, .archive-post-date");
+    for (var i = 0; i < roots.length; i++) {
+      var walker = document.createTreeWalker(roots[i], NodeFilter.SHOW_TEXT, null);
+      var node;
+      while ((node = walker.nextNode())) {
+        node.nodeValue = enDate(node.nodeValue);
+      }
+    }
   }
 
   function translateCounts() {
@@ -171,7 +286,7 @@
   }
 
   function translateSwitches() {
-    var label = lang === "zh" ? "EN" : "中";
+    var label = lang === "zh" ? "中" : "EN";
     if (switchEl) {
       switchEl.textContent = label;
       switchEl.title = t("lang.switch");
@@ -197,6 +312,8 @@
     translateFooter();
     translateSearch();
     translateCounts();
+    translatePostUI();
+    translateDates();
     translateCustomText();
     translateSwitches();
     try {
@@ -220,7 +337,7 @@
     switchEl.className = "nav-link";
     switchEl.id = "alist-lang-switch";
     switchEl.href = "javascript:;";
-    switchEl.textContent = lang === "zh" ? "EN" : "中";
+    switchEl.textContent = lang === "zh" ? "中" : "EN";
     switchEl.title = t("lang.switch");
     switchEl.setAttribute("aria-label", t("lang.switch"));
     item.appendChild(switchEl);
@@ -235,7 +352,7 @@
   mobileSwitch.title = t("lang.switch");
   mobileSwitch.innerHTML =
     '<div class="mobile-grid-item"><span class="alist-lang-switch-label">' +
-    (lang === "zh" ? "EN" : "中") +
+    (lang === "zh" ? "中" : "EN") +
     "</span></div>";
   var mobileMenu = document.querySelector("#mobile-grid-menu .mobile-grid-menu-inner");
   if (mobileMenu) mobileMenu.appendChild(mobileSwitch);

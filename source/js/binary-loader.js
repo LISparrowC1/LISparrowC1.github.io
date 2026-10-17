@@ -90,5 +90,5 @@
     window.addEventListener("load", scheduleHide, { once: true });
   }
 
-  setTimeout(hide, 6000);
+  setTimeout(hide, 1800);
 })();

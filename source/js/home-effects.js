@@ -35,6 +35,8 @@
     updateBanner();
   }
 
+  if (!document.documentElement.classList.contains("alist-home")) return;
+
   var fallback = {
     zh: {
       initial: "无限进步",
