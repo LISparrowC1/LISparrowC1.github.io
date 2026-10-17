@@ -113,8 +113,13 @@ html.alist-home #banner .banner-text .h2::before {
       #8b5cf6 82%,
       #4c1d95 100%
     ),
-    linear-gradient(115deg, rgba(255, 255, 255, 0) 38%, rgba(255, 255, 255, 0.32) 50%, rgba(255, 255, 255, 0) 62%);
-  background-size: 100% 9px, 9px 100%, 100% 100%, 260% 100%;
+    repeating-linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0) 0 90px,
+      rgba(255, 255, 255, 0.32) 112px 142px,
+      rgba(255, 255, 255, 0) 164px 230px
+    );
+  background-size: 100% 9px, 9px 100%, 100% 100%, 230px 100%;
   background-position: 0 0, 0 0, 0 0, 0 0;
   -webkit-background-clip: text;
   background-clip: text;
@@ -125,7 +130,7 @@ html.alist-home #banner .banner-text .h2::before {
 
 @keyframes alist-title-grid {
   to {
-    background-position: 9px 9px, -9px 9px, 0 0, 260% 0;
+    background-position: 9px 9px, -9px 9px, 0 0, -230px 0;
   }
 }
 

@@ -27,6 +27,7 @@ npx hexo generate
 2. 编辑 `source/data/music.json`，把 `daily`、`cny`、`halloween`、`christmas` 的 `src` 填成 `/music/文件名.mp3`。
 3. 顶部导航栏的 `♪` 是音乐总开关，默认关闭；打开后左下角出现播放器，再点播放。
 4. 没有导入文件或加载失败时，播放器会显示“无音乐”，不会播放。
+5. `source/music/` 里的文件名不要以 `_` 或 `.` 开头（Hexo 默认不拷贝这类文件），建议使用简单的英文名。
 
 歌词是可选的：在 `source/music/` 放一个同名的 `.lrc` 文件（例如 `daily.lrc`），然后在 `music.json` 对应曲目里填 `"lyrics": "/music/daily.lrc"`。歌曲播放时，首页打字机的位置会变成同步歌词显示。LRC 使用标准的 `[mm:ss.xx]歌词` 格式。
 
