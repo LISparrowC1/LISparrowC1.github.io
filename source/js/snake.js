@@ -8,8 +8,28 @@
   var STEP_MS = 120;
   var START_LEN = 4;
   var GROW_PER_FOOD = 2;
+  var VISUAL_SELECTOR = [
+    "img",
+    "svg",
+    "i",
+    "button",
+    "input[type=button]",
+    "input[type=submit]",
+    "hr",
+    ".btn",
+    ".tag",
+    ".post-tag",
+    ".pagination a",
+    ".social-icon",
+    ".about-avatar",
+    ".index-info",
+    ".card",
+    "figure"
+  ].join(",");
 
   var active = false;
+  var dead = false;
+  var won = false;
   var layer = null;
   var canvas = null;
   var ctx = null;
@@ -23,7 +43,6 @@
   var grow = 0;
   var foods = [];
   var score = 0;
-  var won = false;
   var docW = 0;
   var docH = 0;
   var playW = 0;
@@ -99,12 +118,47 @@
     queue = [];
     grow = 0;
     score = 0;
+    dead = false;
     won = false;
   }
 
   function collectFoods() {
     foods = [];
     var seen = new Set();
+
+    function addFood(el, position) {
+      if (!el || seen.has(el) || el.closest("#snake-layer")) return;
+      if (el.closest("script,style,noscript,textarea,select,option")) return;
+      var style = getComputedStyle(el);
+      if (style.display === "none" || style.visibility === "hidden" || parseFloat(style.opacity) === 0) return;
+      if (el.getClientRects().length === 0) return;
+
+      var fixed = isFixed(el);
+      var rect = position || el.getBoundingClientRect();
+      if (rect.width < 3 || rect.height < 3) return;
+      var left = rect.left;
+      var top = rect.top;
+      var right = rect.right;
+      var bottom = rect.bottom;
+      if (!fixed) {
+        left += window.scrollX;
+        right += window.scrollX;
+        top += window.scrollY;
+        bottom += window.scrollY;
+        if (right < 0 || bottom < 0 || left > docW || top > docH) return;
+      }
+      seen.add(el);
+      foods.push({
+        el: el,
+        left: left,
+        top: top,
+        right: right,
+        bottom: bottom,
+        fixed: fixed,
+        eaten: false
+      });
+    }
+
     var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
       acceptNode: function (node) {
         if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
@@ -115,7 +169,6 @@
           return NodeFilter.FILTER_REJECT;
         }
         if (parent === document.body || parent === document.documentElement) return NodeFilter.FILTER_REJECT;
-        if (isFixed(parent)) return NodeFilter.FILTER_REJECT;
         return NodeFilter.FILTER_ACCEPT;
       }
     });
@@ -124,29 +177,14 @@
     while ((node = walker.nextNode())) {
       var parent = node.parentElement;
       if (!parent || seen.has(parent)) continue;
-      var style = getComputedStyle(parent);
-      if (style.display === "none" || style.visibility === "hidden" || parseFloat(style.opacity) === 0) continue;
+      var parentStyle = getComputedStyle(parent);
+      if (parentStyle.display === "none" || parentStyle.visibility === "hidden" || parseFloat(parentStyle.opacity) === 0) continue;
       if (parent.getClientRects().length === 0) continue;
-
-      var range = document.createRange();
-      range.selectNodeContents(node);
-      var rects = range.getClientRects();
-      var rect = null;
-      for (var i = 0; i < rects.length; i++) {
-        if (rects[i].width > 2 && rects[i].height > 2) {
-          rect = rects[i];
-          break;
-        }
-      }
-      if (!rect) continue;
-
-      var x = rect.left + rect.width / 2 + window.scrollX;
-      var y = rect.top + rect.height / 2 + window.scrollY;
-      if (x < 0 || y < 0 || x > docW || y > docH) continue;
-
-      seen.add(parent);
-      foods.push({ el: parent, x: x, y: y, eaten: false });
+      addFood(parent);
     }
+
+    var visuals = document.querySelectorAll(VISUAL_SELECTOR);
+    for (var j = 0; j < visuals.length; j++) addFood(visuals[j]);
   }
 
   function resizeCanvas() {
@@ -163,6 +201,8 @@
   function start() {
     if (active) return;
     active = true;
+    dead = false;
+    won = false;
     seq = "";
     startScrollX = window.scrollX;
     startScrollY = window.scrollY;
@@ -198,6 +238,8 @@
   function stop() {
     if (!active) return;
     active = false;
+    dead = false;
+    won = false;
     if (raf) cancelAnimationFrame(raf);
     raf = 0;
 
@@ -218,7 +260,6 @@
     queue = [];
     score = 0;
     grow = 0;
-    won = false;
   }
 
   function preventScroll(event) {
@@ -258,17 +299,20 @@
     if (!lastTime) lastTime = now;
     acc += now - lastTime;
     lastTime = now;
-    var steps = 0;
-    while (acc >= STEP_MS && steps < 4) {
-      step();
-      acc -= STEP_MS;
-      steps++;
+    if (!dead && !won) {
+      var steps = 0;
+      while (acc >= STEP_MS && steps < 4) {
+        step();
+        acc -= STEP_MS;
+        steps++;
+      }
     }
-    draw(now);
+    draw();
     raf = requestAnimationFrame(loop);
   }
 
   function step() {
+    if (dead || won) return;
     if (queue.length) {
       var next = queue.shift();
       if (!(next.x === -dir.x && next.y === -dir.y)) dir = next;
@@ -280,6 +324,14 @@
     else if (nx >= playW) nx = 0;
     if (ny < 0) ny = playH - CELL;
     else if (ny >= playH) ny = 0;
+
+    for (var i = 1; i < snake.length; i++) {
+      if (snake[i].x === nx && snake[i].y === ny) {
+        die();
+        return;
+      }
+    }
+
     snake.unshift({ x: nx, y: ny });
     if (grow > 0) {
       grow--;
@@ -289,6 +341,18 @@
     followHead();
     checkFood();
     updateHud();
+  }
+
+  function die() {
+    if (dead) return;
+    dead = true;
+    if (hud) {
+      hud.classList.remove("is-win");
+      hud.classList.add("is-dead");
+      hud.innerHTML =
+        "撞到自己了 · 吃掉 <b>" + score + "</b> 段 · " +
+        '<span class="snake-key">R 重开</span> · <span class="snake-key">ESC 退出</span>';
+    }
   }
 
   function followHead() {
@@ -316,15 +380,22 @@
 
   function checkFood() {
     var head = snake[0];
-    var headX = head.x + CELL / 2;
-    var headY = head.y + CELL / 2;
-    var radius = CELL * 1.2;
+    var headLeft = head.x;
+    var headTop = head.y;
+    var headRight = headLeft + CELL;
+    var headBottom = headTop + CELL;
+    var headScreenLeft = headLeft - window.scrollX;
+    var headScreenTop = headTop - window.scrollY;
+    var headScreenRight = headScreenLeft + CELL;
+    var headScreenBottom = headScreenTop + CELL;
     for (var i = 0; i < foods.length; i++) {
       var food = foods[i];
       if (food.eaten) continue;
-      var dx = food.x - headX;
-      var dy = food.y - headY;
-      if (dx * dx + dy * dy <= radius * radius) {
+      var left = food.fixed ? headScreenLeft : headLeft;
+      var top = food.fixed ? headScreenTop : headTop;
+      var right = food.fixed ? headScreenRight : headRight;
+      var bottom = food.fixed ? headScreenBottom : headBottom;
+      if (left < food.right && right > food.left && top < food.bottom && bottom > food.top) {
         eat(food);
         break;
       }
@@ -350,17 +421,19 @@
 
   function updateHud() {
     if (!hud) return;
+    if (dead) return;
     var remaining = 0;
     for (var i = 0; i < foods.length; i++) {
       if (!foods[i].eaten) remaining++;
     }
     if (remaining === 0) won = true;
     if (won) {
+      hud.classList.remove("is-dead");
       hud.classList.add("is-win");
       hud.innerHTML = '页面已吃空 · <span class="snake-key">R 重开</span> · <span class="snake-key">ESC 退出</span>';
       return;
     }
-    hud.classList.remove("is-win");
+    hud.classList.remove("is-win", "is-dead");
     hud.innerHTML =
       "吃掉 <b>" + score + "</b> · 长度 <b>" + snake.length + "</b> · 剩余 <b>" + remaining +
       '</b> · <span class="snake-key">R 重开</span> · <span class="snake-key">ESC 退出</span>';
@@ -376,33 +449,11 @@
     c.closePath();
   }
 
-  function draw(now) {
+  function draw() {
     if (!ctx) return;
     var offsetX = window.scrollX;
     var offsetY = window.scrollY;
     ctx.clearRect(0, 0, viewW, viewH);
-
-    for (var i = 0; i < foods.length; i++) {
-      var food = foods[i];
-      if (food.eaten) continue;
-      var fx = food.x - offsetX;
-      var fy = food.y - offsetY;
-      if (fx < -30 || fx > viewW + 30 || fy < -30 || fy > viewH + 30) continue;
-      var pulse = 1 + 0.14 * Math.sin(now / 280 + i * 1.7);
-      var radius = 8.5 * pulse;
-      var glow = ctx.createRadialGradient(fx, fy, 0, fx, fy, radius * 2.6);
-      glow.addColorStop(0, "rgba(196, 181, 253, 0.95)");
-      glow.addColorStop(0.32, "rgba(139, 92, 246, 0.62)");
-      glow.addColorStop(1, "rgba(139, 92, 246, 0)");
-      ctx.fillStyle = glow;
-      ctx.beginPath();
-      ctx.arc(fx, fy, radius * 2.6, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = "#ede9fe";
-      ctx.beginPath();
-      ctx.arc(fx, fy, 3.1, 0, Math.PI * 2);
-      ctx.fill();
-    }
 
     for (var j = snake.length - 1; j >= 0; j--) {
       var seg = snake[j];
@@ -412,8 +463,13 @@
       var ratio = j / Math.max(1, snake.length - 1);
       var size = CELL - 2 - ratio * 3;
       var pad = (CELL - size) / 2;
-      ctx.fillStyle = j === 0 ? "#c4b5fd" : "rgba(139, 92, 246, " + (0.96 - ratio * 0.48) + ")";
-      ctx.shadowColor = "rgba(139, 92, 246, 0.6)";
+      if (dead) {
+        ctx.fillStyle = j === 0 ? "#fca5a5" : "rgba(248, 113, 113, " + (0.95 - ratio * 0.45) + ")";
+        ctx.shadowColor = "rgba(248, 113, 113, 0.7)";
+      } else {
+        ctx.fillStyle = j === 0 ? "#c4b5fd" : "rgba(139, 92, 246, " + (0.96 - ratio * 0.48) + ")";
+        ctx.shadowColor = "rgba(139, 92, 246, 0.6)";
+      }
       ctx.shadowBlur = j === 0 ? 18 : 8;
       roundRect(ctx, sx + pad, sy + pad, size, size, 5);
       ctx.fill();
@@ -435,7 +491,7 @@
     ];
     for (var k = 0; k < eyes.length; k++) {
       var eye = eyes[k];
-      ctx.fillStyle = "#f5f3ff";
+      ctx.fillStyle = dead ? "#fecaca" : "#f5f3ff";
       ctx.beginPath();
       ctx.arc(eye.x, eye.y, eyeRadius, 0, Math.PI * 2);
       ctx.fill();
@@ -467,6 +523,7 @@
           setTimeout(start, 60);
           return;
         }
+        if (dead || won) return;
         var next = dirFromKey(event.key);
         if (next) {
           event.preventDefault();

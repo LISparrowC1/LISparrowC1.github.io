@@ -439,12 +439,36 @@ body.snake-playing {
   border-color: rgba(56, 189, 248, 0.45);
 }
 
+#snake-hud.is-dead {
+  color: #f87171;
+  background: rgba(30, 5, 10, 0.8);
+  border-color: rgba(248, 113, 113, 0.5);
+}
+
+#snake-hud.is-dead b {
+  color: #fecaca;
+}
+
 #snake-hud .snake-key {
   color: #8f8fa8;
 }
 
 .snake-eaten {
-  visibility: hidden !important;
+  animation: alist-snake-bite 0.22s ease-in forwards;
+  pointer-events: none;
+}
+
+@keyframes alist-snake-bite {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0.88);
+    visibility: hidden;
+  }
 }
 
 /* 响应式 */
