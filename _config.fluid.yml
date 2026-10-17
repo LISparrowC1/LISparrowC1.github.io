@@ -208,6 +208,7 @@ custom_css:
 
 custom_js:
   - /js/background-effect.js
+  - /js/i18n.js
   - /js/home-effects.js
   - /js/festival-effect.js
   - /js/music-player.js

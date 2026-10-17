@@ -1,0 +1,42 @@
+{
+  "zh": {
+    "nav.home": "首页",
+    "nav.archives": "归档",
+    "nav.categories": "分类",
+    "nav.tags": "标签",
+    "nav.about": "关于",
+    "page.archives": "归档",
+    "page.categories": "分类",
+    "page.tags": "标签",
+    "page.about": "关于",
+    "footer.visitors": "访客",
+    "footer.views": "访问",
+    "search.placeholder": "关键词",
+    "archives.count": "共计 {n} 篇文章",
+    "post.words": "{n} 字",
+    "post.minutes": "{n} 分钟",
+    "music.switch": "音乐开关",
+    "music.no": "无音乐",
+    "lang.switch": "切换语言"
+  },
+  "en": {
+    "nav.home": "Home",
+    "nav.archives": "Archives",
+    "nav.categories": "Categories",
+    "nav.tags": "Tags",
+    "nav.about": "About",
+    "page.archives": "Archives",
+    "page.categories": "Categories",
+    "page.tags": "Tags",
+    "page.about": "About",
+    "footer.visitors": "Visitors",
+    "footer.views": "Views",
+    "search.placeholder": "Search",
+    "archives.count": "{n} posts",
+    "post.words": "{n} words",
+    "post.minutes": "{n} min",
+    "music.switch": "Music",
+    "music.no": "No music",
+    "lang.switch": "Switch language"
+  }
+}

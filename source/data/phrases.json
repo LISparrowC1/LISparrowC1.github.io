@@ -1,22 +1,48 @@
 {
-  "quotes": [
-    "保持好奇",
-    "把复杂的事做简单",
-    "想到就去做",
-    "慢一点也没关系",
-    "今天也要有点收获",
-    "在能力范围内做到最好",
-    "去做，然后再说",
-    "把喜欢的事做久一点",
-    "把今天过成想要的样子"
-  ],
-  "greetings": {
-    "dawn": "夜深了，早点休息。",
-    "morning": "早上好，今天也慢慢来。",
-    "forenoon": "上午好，继续做点喜欢的事。",
-    "noon": "中午好，记得吃饭。",
-    "afternoon": "下午好，别忘记抬头看看。",
-    "evening": "晚上好，写点小东西吧。",
-    "night": "夜深了，早点休息。"
+  "zh": {
+    "initial": "无限进步",
+    "quotes": [
+      "保持好奇",
+      "把复杂的事做简单",
+      "想到就去做",
+      "慢一点也没关系",
+      "今天也要有点收获",
+      "在能力范围内做到最好",
+      "去做，然后再说",
+      "把喜欢的事做久一点",
+      "把今天过成想要的样子"
+    ],
+    "greetings": {
+      "dawn": "夜深了，早点休息。",
+      "morning": "早上好，今天也慢慢来。",
+      "forenoon": "上午好，继续做点喜欢的事。",
+      "noon": "中午好，记得吃饭。",
+      "afternoon": "下午好，别忘记抬头看看。",
+      "evening": "晚上好，写点小东西吧。",
+      "night": "夜深了，早点休息。"
+    }
+  },
+  "en": {
+    "initial": "Infinite Progress",
+    "quotes": [
+      "Stay curious.",
+      "Make the complex simple.",
+      "Just start.",
+      "Slow is fine.",
+      "A little progress counts.",
+      "Do your best where you are.",
+      "Act first, explain later.",
+      "Keep doing what you love.",
+      "Make today what you want it to be."
+    ],
+    "greetings": {
+      "dawn": "It's late. Get some rest.",
+      "morning": "Good morning. Take it slow.",
+      "forenoon": "Good morning. Do something you love.",
+      "noon": "Good afternoon. Remember to eat.",
+      "afternoon": "Good afternoon. Look up for a moment.",
+      "evening": "Good evening. Write something small.",
+      "night": "It's late. Get some rest."
+    }
   }
 }

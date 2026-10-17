@@ -1,3 +1,7 @@
+@import url("https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/lxgwwenkai-regular.css");
+@import url("https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/lxgwwenkai-bold.css");
+@import url("https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/lxgwwenkai-light.css");
+
 /* 全站背景：极光与星光 */
 html {
   background: #05050a;
@@ -96,38 +100,89 @@ html.alist-home #banner .banner-text .h2::before {
   text-indent: 0.18em;
   text-shadow: none;
   background-image:
-    repeating-linear-gradient(0deg, rgba(125, 211, 252, 0.17) 0 1px, transparent 1px 9px),
+    repeating-linear-gradient(0deg, rgba(125, 211, 252, 0.18) 0 1px, transparent 1px 9px),
     repeating-linear-gradient(90deg, rgba(196, 181, 253, 0.15) 0 1px, transparent 1px 9px),
     linear-gradient(
-      112deg,
-      rgba(56, 189, 248, 0.52) 0%,
-      rgba(56, 189, 248, 0.12) 18%,
-      #f8fafc 42%,
-      #f8fafc 60%,
-      rgba(167, 139, 250, 0.2) 82%,
-      rgba(167, 139, 250, 0.6) 100%
-    );
-  background-size: 100% 9px, 9px 100%, 260% 100%;
-  background-position: 0 0, 0 0, 0 50%;
+      90deg,
+      #075985 0%,
+      #0ea5e9 18%,
+      #bae6fd 34%,
+      #f8fafc 46%,
+      #f8fafc 54%,
+      #c4b5fd 64%,
+      #8b5cf6 82%,
+      #4c1d95 100%
+    ),
+    linear-gradient(115deg, rgba(255, 255, 255, 0) 38%, rgba(255, 255, 255, 0.32) 50%, rgba(255, 255, 255, 0) 62%);
+  background-size: 100% 9px, 9px 100%, 100% 100%, 260% 100%;
+  background-position: 0 0, 0 0, 0 0, 0 0;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 0 26px rgba(139, 92, 246, 0.38));
-  animation: alist-title-grid 11s linear infinite;
+  animation: alist-title-grid 9s linear infinite;
 }
 
 @keyframes alist-title-grid {
-  0% {
-    background-position: 0 0, 0 0, 0 50%;
+  to {
+    background-position: 9px 9px, -9px 9px, 0 0, 260% 0;
   }
+}
 
-  50% {
-    background-position: 4px 9px, -4px 9px, 50% 50%;
-  }
+body,
+.banner-text,
+#navbar,
+#footer,
+.markdown-body,
+.post-content,
+.about-content,
+.index-header,
+.index-excerpt,
+.post-meta,
+#alist-music,
+#alist-lang-switch,
+.alist-lang-switch-mobile {
+  font-family: "LXGW WenKai", "Noto Serif SC", "Songti SC", serif;
+}
 
-  100% {
-    background-position: 8px 18px, -8px 18px, 100% 50%;
-  }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.banner-text .h1,
+.banner-text .h2 {
+  font-family: "LXGW WenKai", "Noto Serif SC", "Songti SC", serif;
+}
+
+code,
+pre,
+kbd,
+.hljs,
+.highlight,
+.code-toolbar {
+  font-family: "JetBrains Mono", "Cascadia Code", "Consolas", monospace !important;
+}
+
+#alist-lang-switch {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+#alist-lang-switch:hover {
+  color: var(--alist-violet-2) !important;
+}
+
+.alist-lang-switch-mobile {
+  color: inherit;
+}
+
+.alist-lang-switch-mobile .alist-lang-switch-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
 }
 
 /* 无限进步打字机 */
@@ -141,6 +196,10 @@ html.alist-home #subtitle::after {
   margin-left: 0.06em;
   color: var(--alist-violet-2);
   animation: alist-caret 1s steps(2, end) infinite;
+}
+
+html.alist-home #subtitle.is-lyrics::after {
+  display: none;
 }
 
 @keyframes alist-caret {

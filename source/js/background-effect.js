@@ -98,34 +98,28 @@
         var dist = Math.sqrt(dx * dx + dy * dy) || 1;
         if (dist > 620) continue;
         var decay = Math.exp(-dist / 280) * Math.exp(-age * 1.15);
-        var wave = Math.sin(dist * 0.055 - age * 7.5) * decay * 13;
+        var wave = Math.sin(dist * 0.055 - age * 7.5) * decay * 20;
         sx += (dx / dist) * wave;
         sy += (dy / dist) * wave;
       }
 
-      var alpha = star.base + Math.sin(t * star.speed + star.phase) * star.amp;
+      var boost = 0;
+      for (var b = 0; b < ripples.length; b++) {
+        var bp = ripples[b];
+        var bage = (now - bp.t) / 1000;
+        if (bage < 0 || bage > 2.8) continue;
+        var bdx = star.x - bp.x;
+        var bdy = star.y - bp.y;
+        var bdist = Math.sqrt(bdx * bdx + bdy * bdy);
+        if (bdist < 320) boost += Math.exp(-bdist / 110) * Math.exp(-bage * 1.8) * 0.55;
+      }
+
+      var alpha = star.base + Math.sin(t * star.speed + star.phase) * star.amp + boost;
       if (alpha < 0.05) alpha = 0.05;
       ctx.beginPath();
       ctx.fillStyle = "rgba(" + star.color + "," + alpha.toFixed(3) + ")";
       ctx.arc(sx, sy, star.r, 0, Math.PI * 2);
       ctx.fill();
-    }
-
-    for (var k = 0; k < ripples.length; k++) {
-      var rp = ripples[k];
-      var ra = (now - rp.t) / 1000;
-      if (ra < 0 || ra > 2.8) continue;
-      var radius = ra * 190;
-      var fade = (1 - ra / 2.8) * 0.2;
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = "rgba(125,211,252," + fade.toFixed(3) + ")";
-      ctx.beginPath();
-      ctx.arc(rp.x, rp.y, radius, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.strokeStyle = "rgba(196,181,253," + (fade * 0.72).toFixed(3) + ")";
-      ctx.beginPath();
-      ctx.arc(rp.x, rp.y, radius + 10, 0, Math.PI * 2);
-      ctx.stroke();
     }
   }
 

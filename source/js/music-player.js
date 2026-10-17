@@ -12,22 +12,34 @@
     enabled = false;
   }
 
+  var lang = localStorage.getItem("alist-lang") === "en" ? "en" : "zh";
   var manifest = null;
   var audio = new Audio();
   var currentKey = "";
   var playing = false;
   var festival = document.documentElement.dataset.alistFestival || "none";
+  var lyrics = [];
+  var lyricsActive = false;
+  var lastLyric = "";
 
   audio.loop = true;
   audio.preload = "none";
   audio.volume = 0.5;
+
+  function tr(key) {
+    if (key === "noMusic") return lang === "en" ? "No music" : "无音乐";
+    if (key === "switch") return lang === "en" ? "Music" : "音乐开关";
+    if (key === "play") return lang === "en" ? "Play music" : "播放音乐";
+    if (key === "pause") return lang === "en" ? "Pause music" : "暂停音乐";
+    return key;
+  }
 
   var root = document.createElement("div");
   root.id = "alist-music";
   root.hidden = true;
   root.innerHTML =
     '<button id="alist-music-toggle" type="button" aria-label="播放音乐"><span class="alist-music-icon">▶</span></button>' +
-    '<div class="alist-music-info"><strong id="alist-music-title">ALIST RADIO</strong><span id="alist-music-artist">音乐未导入</span></div>' +
+    '<div class="alist-music-info"><strong id="alist-music-title">ALIST RADIO</strong><span id="alist-music-artist">无音乐</span></div>' +
     '<div class="alist-music-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></div>' +
     '<input id="alist-music-volume" type="range" min="0" max="100" value="50" aria-label="音量">';
   document.body.appendChild(root);
@@ -47,8 +59,8 @@
     link.className = "nav-link";
     link.id = "alist-music-switch";
     link.href = "javascript:;";
-    link.title = "音乐开关";
-    link.setAttribute("aria-label", "音乐开关");
+    link.title = tr("switch");
+    link.setAttribute("aria-label", tr("switch"));
     link.setAttribute("aria-pressed", "false");
     link.innerHTML = '<span class="alist-music-switch-icon">♪</span>';
     item.appendChild(link);
@@ -60,11 +72,88 @@
   var mobileSwitch = document.createElement("a");
   mobileSwitch.href = "javascript:;";
   mobileSwitch.className = "alist-music-switch-mobile";
-  mobileSwitch.setAttribute("aria-label", "音乐开关");
+  mobileSwitch.setAttribute("aria-label", tr("switch"));
   mobileSwitch.innerHTML =
-    '<div class="mobile-grid-item"><span class="alist-music-switch-icon">♪</span><span class="alist-music-switch-label">音乐</span></div>';
+    '<div class="mobile-grid-item"><span class="alist-music-switch-icon">♪</span><span class="alist-music-switch-label">' +
+    (lang === "en" ? "Music" : "音乐") +
+    "</span></div>";
   var mobileMenu = document.querySelector("#mobile-grid-menu .mobile-grid-menu-inner");
   if (mobileMenu) mobileMenu.appendChild(mobileSwitch);
+
+  function trackText(track, field) {
+    if (!track) return "";
+    if (lang === "en" && track[field + "En"]) return track[field + "En"];
+    return track[field] || "";
+  }
+
+  function dispatchLyrics(active, text) {
+    lyricsActive = active;
+    try {
+      window.dispatchEvent(new CustomEvent("alist:lyrics", { detail: { active: active, text: text || "" } }));
+    } catch (error) {
+      // Ignore environments without CustomEvent.
+    }
+  }
+
+  function clearLyrics() {
+    lyrics = [];
+    lastLyric = "";
+    if (lyricsActive) dispatchLyrics(false, "");
+  }
+
+  function parseLrc(text) {
+    var parsed = [];
+    var lines = String(text || "").split(/\r?\n/);
+    for (var i = 0; i < lines.length; i++) {
+      var match = lines[i].match(/^\[(\d{1,2}):(\d{2})(?:[.:](\d{1,3}))?\](.*)$/);
+      if (!match) continue;
+      var minute = parseInt(match[1], 10);
+      var second = parseInt(match[2], 10);
+      var fraction = match[3] ? parseInt(match[3], 10) / Math.pow(10, match[3].length) : 0;
+      var body = match[4].replace(/\s+/g, " ").trim();
+      if (!body) continue;
+      parsed.push({ time: minute * 60 + second + fraction, text: body });
+    }
+    parsed.sort(function (a, b) {
+      return a.time - b.time;
+    });
+    lyrics = parsed;
+  }
+
+  function loadLyrics(url) {
+    lyrics = [];
+    lastLyric = "";
+    if (!url) return;
+    fetch(url, { cache: "no-store" })
+      .then(function (response) {
+        return response.ok ? response.text() : "";
+      })
+      .then(function (text) {
+        if (text) parseLrc(text);
+      })
+      .catch(function () {});
+  }
+
+  function syncLyrics() {
+    if (!lyrics.length) return;
+    var time = audio.currentTime;
+    var line = "";
+    for (var i = 0; i < lyrics.length; i++) {
+      if (lyrics[i].time <= time) line = lyrics[i].text;
+      else break;
+    }
+    if (line !== lastLyric) {
+      lastLyric = line;
+      dispatchLyrics(true, line);
+    }
+  }
+
+  function showNoMusic() {
+    titleEl.textContent = "ALIST RADIO";
+    artistEl.textContent = tr("noMusic");
+    setPlayable(false);
+    clearLyrics();
+  }
 
   function setSwitchState() {
     var nodes = [switchEl, mobileSwitch];
@@ -72,7 +161,8 @@
       if (!nodes[i]) continue;
       nodes[i].classList.toggle("is-on", enabled);
       nodes[i].setAttribute("aria-pressed", enabled ? "true" : "false");
-      nodes[i].title = enabled ? "音乐开关：开" : "音乐开关：关";
+      nodes[i].title = tr("switch");
+      nodes[i].setAttribute("aria-label", tr("switch"));
     }
   }
 
@@ -85,7 +175,7 @@
     playing = value;
     root.classList.toggle("is-playing", value);
     icon.textContent = value ? "Ⅱ" : "▶";
-    playButton.setAttribute("aria-label", value ? "暂停音乐" : "播放音乐");
+    playButton.setAttribute("aria-label", tr(value ? "pause" : "play"));
   }
 
   function trackKey() {
@@ -100,31 +190,29 @@
     var key = trackKey();
     if (!key) {
       currentKey = "";
-      titleEl.textContent = "ALIST RADIO";
-      artistEl.textContent = "未找到音乐清单";
-      setPlayable(false);
+      showNoMusic();
       return;
     }
-    if (!force && currentKey === key && audio.getAttribute("src")) return;
 
     var track = manifest.tracks[key] || {};
     currentKey = key;
-    titleEl.textContent = track.title || "ALIST RADIO";
-    artistEl.textContent = track.artist || "未导入音乐";
+    titleEl.textContent = trackText(track, "title") || "ALIST RADIO";
+    artistEl.textContent = trackText(track, "artist") || "ALIST RADIO";
+    clearLyrics();
     audio.pause();
     setPlayingState(false);
 
-    if (track.src) {
+    if (!track.src) {
+      showNoMusic();
+      return;
+    }
+
+    if (force || audio.getAttribute("src") !== track.src) {
       audio.src = track.src;
       audio.load();
-      setPlayable(true);
-      artistEl.textContent = track.artist || "ALIST RADIO";
-    } else {
-      audio.removeAttribute("src");
-      audio.load();
-      setPlayable(false);
-      artistEl.textContent = "请把音乐放入 source/music 并填写 src";
     }
+    setPlayable(true);
+    loadLyrics(track.lyrics);
   }
 
   function applyEnabled(value) {
@@ -132,13 +220,14 @@
     try {
       localStorage.setItem(STORAGE_KEY, enabled ? "1" : "0");
     } catch (error) {
-      // Ignore storage failures (private mode).
+      // Ignore storage failures.
     }
     root.hidden = !enabled;
     setSwitchState();
     if (!enabled) {
       audio.pause();
       setPlayingState(false);
+      clearLyrics();
     } else {
       updateTrack(false);
     }
@@ -175,14 +264,21 @@
 
   audio.addEventListener("play", function () {
     setPlayingState(true);
+    if (lyrics.length) {
+      lyricsActive = true;
+      syncLyrics();
+    }
+  });
+  audio.addEventListener("timeupdate", function () {
+    if (lyrics.length) syncLyrics();
   });
   audio.addEventListener("pause", function () {
     setPlayingState(false);
+    if (lyricsActive) dispatchLyrics(false, "");
   });
   audio.addEventListener("error", function () {
-    setPlayable(false);
     setPlayingState(false);
-    artistEl.textContent = "音频未找到，请检查 src";
+    showNoMusic();
   });
 
   window.addEventListener("alist:festival", function (event) {
@@ -198,22 +294,35 @@
     }
   });
 
+  window.addEventListener("alist:lang", function (event) {
+    lang = event.detail === "en" ? "en" : "zh";
+    setSwitchState();
+    if (currentKey && manifest && manifest.tracks && manifest.tracks[currentKey] && manifest.tracks[currentKey].src) {
+      var track = manifest.tracks[currentKey];
+      titleEl.textContent = trackText(track, "title");
+      artistEl.textContent = trackText(track, "artist");
+    } else {
+      showNoMusic();
+    }
+    var mobileLabel = mobileSwitch.querySelector(".alist-music-switch-label");
+    if (mobileLabel) mobileLabel.textContent = lang === "en" ? "Music" : "音乐";
+    if (lyricsActive) dispatchLyrics(true, lastLyric);
+  });
+
   fetch("/data/music.json", { cache: "no-store" })
     .then(function (response) {
       return response.ok ? response.json() : null;
     })
     .then(function (data) {
       if (!data || !data.tracks) {
-        artistEl.textContent = "未找到 /data/music.json";
-        setPlayable(false);
+        showNoMusic();
         return;
       }
       manifest = data;
       updateTrack(false);
     })
     .catch(function () {
-      artistEl.textContent = "音乐清单加载失败";
-      setPlayable(false);
+      showNoMusic();
     });
 
   setSwitchState();
