@@ -34,13 +34,13 @@ body {
   overflow: hidden;
   pointer-events: none;
   background:
-    linear-gradient(116deg, transparent 0 8%, rgba(34, 211, 238, 0.14) 18%, rgba(56, 189, 248, 0.28) 25%, transparent 35%),
-    linear-gradient(98deg, transparent 18%, rgba(167, 139, 250, 0.24) 37%, transparent 52%),
-    linear-gradient(76deg, transparent 45%, rgba(45, 212, 191, 0.18) 63%, transparent 78%),
-    radial-gradient(55% 45% at 22% 20%, rgba(56, 189, 248, 0.2), transparent 70%),
-    radial-gradient(45% 40% at 78% 28%, rgba(139, 92, 246, 0.24), transparent 72%),
-    radial-gradient(50% 40% at 55% 88%, rgba(45, 212, 191, 0.13), transparent 72%);
-  filter: blur(48px) saturate(1.35);
+    linear-gradient(116deg, transparent 0 8%, rgba(34, 211, 238, 0.09) 18%, rgba(56, 189, 248, 0.18) 25%, transparent 35%),
+    linear-gradient(98deg, transparent 18%, rgba(167, 139, 250, 0.16) 37%, transparent 52%),
+    linear-gradient(76deg, transparent 45%, rgba(45, 212, 191, 0.11) 63%, transparent 78%),
+    radial-gradient(55% 45% at 22% 20%, rgba(56, 189, 248, 0.13), transparent 70%),
+    radial-gradient(45% 40% at 78% 28%, rgba(139, 92, 246, 0.16), transparent 72%),
+    radial-gradient(50% 40% at 55% 88%, rgba(45, 212, 191, 0.08), transparent 72%);
+  filter: blur(52px) saturate(1.2);
   opacity: 1;
   animation: alist-aurora-drift 26s ease-in-out infinite alternate;
 }
@@ -55,19 +55,19 @@ body {
     repeating-linear-gradient(
       90deg,
       transparent 0 24px,
-      rgba(94, 234, 212, 0.08) 31px 35px,
+      rgba(94, 234, 212, 0.04) 31px 35px,
       transparent 42px 70px
     ),
     linear-gradient(
       112deg,
       transparent 0 14%,
-      rgba(45, 212, 191, 0.24) 26%,
-      rgba(56, 189, 248, 0.22) 36%,
+      rgba(45, 212, 191, 0.15) 26%,
+      rgba(56, 189, 248, 0.14) 36%,
       transparent 52%,
-      rgba(167, 139, 250, 0.2) 65%,
+      rgba(167, 139, 250, 0.12) 65%,
       transparent 82%
     );
-  filter: blur(38px);
+  filter: blur(42px);
   mix-blend-mode: screen;
   transform: skewX(-10deg) scale(1.15);
   -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 14%, #000 72%, transparent 100%);
@@ -84,13 +84,13 @@ body {
 
 html[data-user-color-scheme="light"] #alist-aurora {
   background:
-    linear-gradient(116deg, transparent 0 8%, rgba(111, 158, 158, 0.16) 18%, rgba(143, 181, 201, 0.26) 25%, transparent 35%),
-    linear-gradient(98deg, transparent 18%, rgba(203, 183, 142, 0.17) 37%, transparent 52%),
-    linear-gradient(76deg, transparent 45%, rgba(127, 211, 196, 0.16) 63%, transparent 78%),
-    radial-gradient(55% 45% at 22% 20%, rgba(111, 158, 158, 0.26), transparent 70%),
-    radial-gradient(45% 40% at 78% 28%, rgba(78, 105, 128, 0.26), transparent 72%),
-    radial-gradient(50% 40% at 55% 88%, rgba(203, 183, 142, 0.16), transparent 72%);
-  filter: blur(48px) saturate(1.1);
+    linear-gradient(116deg, transparent 0 8%, rgba(111, 158, 158, 0.11) 18%, rgba(143, 181, 201, 0.18) 25%, transparent 35%),
+    linear-gradient(98deg, transparent 18%, rgba(203, 183, 142, 0.11) 37%, transparent 52%),
+    linear-gradient(76deg, transparent 45%, rgba(127, 211, 196, 0.1) 63%, transparent 78%),
+    radial-gradient(55% 45% at 22% 20%, rgba(111, 158, 158, 0.18), transparent 70%),
+    radial-gradient(45% 40% at 78% 28%, rgba(78, 105, 128, 0.18), transparent 72%),
+    radial-gradient(50% 40% at 55% 88%, rgba(203, 183, 142, 0.1), transparent 72%);
+  filter: blur(52px) saturate(1.05);
 }
 
 html[data-user-color-scheme="light"] #alist-aurora::before,
@@ -99,16 +99,16 @@ html[data-user-color-scheme="light"] #alist-aurora::after {
     repeating-linear-gradient(
       90deg,
       transparent 0 24px,
-      rgba(127, 211, 196, 0.08) 31px 35px,
+      rgba(127, 211, 196, 0.04) 31px 35px,
       transparent 42px 70px
     ),
     linear-gradient(
       112deg,
       transparent 0 14%,
-      rgba(127, 211, 196, 0.2) 26%,
-      rgba(143, 181, 201, 0.2) 36%,
+      rgba(127, 211, 196, 0.13) 26%,
+      rgba(143, 181, 201, 0.13) 36%,
       transparent 52%,
-      rgba(203, 183, 142, 0.16) 65%,
+      rgba(203, 183, 142, 0.1) 65%,
       transparent 82%
     );
 }
@@ -194,67 +194,6 @@ html[data-user-color-scheme="light"].alist-home #banner .mask {
     radial-gradient(52% 46% at 22% 38%, rgba(111, 158, 158, 0.18), transparent 66%),
     radial-gradient(45% 40% at 78% 52%, rgba(203, 183, 142, 0.1), transparent 68%),
     linear-gradient(180deg, rgba(8, 18, 27, 0.18) 0%, rgba(8, 18, 27, 0.48) 55%, rgba(8, 18, 27, 0.94) 100%) !important;
-}
-
-html.alist-home #banner .mask {
-  position: relative;
-  overflow: hidden;
-}
-
-html.alist-home #banner .banner-text {
-  position: relative;
-  z-index: 2;
-}
-
-html.alist-home #banner .mask::before {
-  content: "";
-  position: absolute;
-  inset: -15%;
-  z-index: 0;
-  pointer-events: none;
-  background:
-    repeating-linear-gradient(
-      90deg,
-      transparent 0 26px,
-      rgba(94, 234, 212, 0.14) 34px 38px,
-      transparent 46px 74px
-    ),
-    linear-gradient(
-      104deg,
-      transparent 0 14%,
-      rgba(45, 212, 191, 0.28) 22%,
-      rgba(34, 211, 238, 0.3) 28%,
-      transparent 38%
-    ),
-    linear-gradient(84deg, transparent 32%, rgba(56, 189, 248, 0.24) 46%, transparent 60%),
-    linear-gradient(72deg, transparent 56%, rgba(167, 139, 250, 0.22) 70%, transparent 80%);
-  filter: blur(20px) saturate(1.5);
-  mix-blend-mode: screen;
-  opacity: 0.85;
-  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 72%, transparent 100%);
-  mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 72%, transparent 100%);
-  animation: alist-aurora-curtain 22s ease-in-out infinite alternate;
-}
-
-html[data-user-color-scheme="light"].alist-home #banner .mask::before {
-  background:
-    repeating-linear-gradient(
-      90deg,
-      transparent 0 26px,
-      rgba(127, 211, 196, 0.16) 34px 38px,
-      transparent 46px 74px
-    ),
-    linear-gradient(
-      104deg,
-      transparent 0 14%,
-      rgba(94, 234, 212, 0.32) 22%,
-      rgba(127, 211, 196, 0.36) 28%,
-      transparent 38%
-    ),
-    linear-gradient(84deg, transparent 32%, rgba(143, 181, 201, 0.26) 46%, transparent 60%),
-    linear-gradient(72deg, transparent 56%, rgba(253, 230, 138, 0.2) 70%, transparent 80%);
-  filter: blur(18px) saturate(1.5);
-  opacity: 0.9;
 }
 
 #board,
@@ -856,8 +795,7 @@ html.alist-home #subtitle.is-lyrics::after {
 @media (prefers-reduced-motion: reduce) {
   #alist-aurora,
   #alist-aurora::before,
-  #alist-aurora::after,
-  html.alist-home #banner .mask::before {
+  #alist-aurora::after {
     animation: none;
   }
 
