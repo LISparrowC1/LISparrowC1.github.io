@@ -20,7 +20,13 @@
       "afternoon": "下午好，别忘记抬头看看。",
       "evening": "晚上好，写点小东西吧。",
       "night": "夜深了，早点休息。"
-    }
+    },
+    "cnyGreetings": [
+      "新春快乐，万事顺意。",
+      "恭喜发财，岁岁平安。",
+      "新年好，愿你所求皆如愿。",
+      "岁序更新，喜乐安宁。"
+    ]
   },
   "en": {
     "initial": "Infinite Progress",
@@ -43,6 +49,12 @@
       "afternoon": "Good afternoon. Look up for a moment.",
       "evening": "Good evening. Write something small.",
       "night": "It's late. Get some rest."
-    }
+    },
+    "cnyGreetings": [
+      "Happy Spring Festival!",
+      "Wishing you a joyful and prosperous new year.",
+      "May the new year bring you peace and happiness.",
+      "Good luck and good fortune in the new year."
+    ]
   }
 }

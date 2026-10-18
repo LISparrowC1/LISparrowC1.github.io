@@ -49,7 +49,13 @@
         afternoon: "下午好，别忘记抬头看看。",
         evening: "晚上好，写点小东西吧。",
         night: "夜深了，早点休息。"
-      }
+      },
+      cnyGreetings: [
+        "新春快乐，万事顺意。",
+        "恭喜发财，岁岁平安。",
+        "新年好，愿你所求皆如愿。",
+        "岁序更新，喜乐安宁。"
+      ]
     },
     en: {
       initial: "Infinite Progress",
@@ -62,7 +68,13 @@
         afternoon: "Good afternoon. Look up for a moment.",
         evening: "Good evening. Write something small.",
         night: "It's late. Get some rest."
-      }
+      },
+      cnyGreetings: [
+        "Happy Spring Festival!",
+        "Wishing you a joyful and prosperous new year.",
+        "May the new year bring you peace and happiness.",
+        "Good luck and good fortune in the new year."
+      ]
     }
   };
 
@@ -74,6 +86,7 @@
   var current = content.initial;
   var lyricsMode = false;
   var typing = false;
+  var cnyActive = false;
 
   fetch("/data/phrases.json", { cache: "no-store" })
     .then(function (response) {
@@ -84,7 +97,7 @@
       if (data.zh && Array.isArray(data.zh.quotes)) phrases.zh = data.zh;
       if (data.en && Array.isArray(data.en.quotes)) phrases.en = data.en;
       content = phrases[lang] || phrases.zh;
-      if (!lyricsMode && !typing) typeText(content.initial);
+      if (!lyricsMode && !typing) typeText(cnyActive ? pickPhrase() : content.initial);
     })
     .catch(function () {
       // Keep the built-in fallback when the data file is unavailable.
@@ -133,6 +146,13 @@
   }
 
   function pickPhrase() {
+    if (cnyActive && content.cnyGreetings && content.cnyGreetings.length) {
+      var cnyPool = content.cnyGreetings;
+      var cnyNext = cnyPool[Math.floor(Math.random() * cnyPool.length)];
+      if (cnyNext === current) cnyNext = cnyPool[(cnyPool.indexOf(cnyNext) + 1) % cnyPool.length];
+      current = cnyNext;
+      return cnyNext;
+    }
     var pool = content.quotes.slice();
     pool.push(greeting());
     var next = pool[Math.floor(Math.random() * pool.length)];
@@ -171,6 +191,15 @@
     nextPhrase();
   });
 
+  window.addEventListener("alist:festival", function (event) {
+    var next = event.detail === "cny";
+    if (next === cnyActive) return;
+    cnyActive = next;
+    if (lyricsMode) return;
+    typing = false;
+    typeText(cnyActive ? pickPhrase() : content.initial);
+  });
+
   window.addEventListener("alist:lang", function (event) {
     lang = event.detail === "en" ? "en" : "zh";
     content = phrases[lang] || phrases.zh;
@@ -178,7 +207,7 @@
     lyricsMode = false;
     subtitle.classList.remove("is-lyrics");
     typing = false;
-    typeText(content.initial);
+    typeText(cnyActive ? pickPhrase() : content.initial);
   });
 
   window.addEventListener("alist:lyrics", function (event) {
@@ -194,7 +223,7 @@
       lyricsMode = false;
       subtitle.classList.remove("is-lyrics");
       typing = false;
-      typeText(content.initial);
+      typeText(cnyActive ? pickPhrase() : content.initial);
     }
   });
 

@@ -482,33 +482,89 @@ html.alist-home #subtitle.is-lyrics::after {
   }
 }
 
+#festival-fireworks {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+
 .festival-bat {
   position: absolute;
-  left: -120px;
+  top: 78vh;
   width: 64px;
   height: 32px;
-  color: #c4b5fd;
-  opacity: 0.62;
-  filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.38));
-  animation-name: festival-bat-fly;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
+  color: #1e1b2e;
+  opacity: 0;
+  filter: drop-shadow(0 0 9px rgba(139, 92, 246, 0.8));
+  animation: festival-bat-startle 1.8s cubic-bezier(0.1, 0.7, 0.2, 1) forwards;
+  animation-delay: var(--bat-delay, 0s);
+  will-change: transform, opacity;
+}
+
+.festival-bat.from-left {
+  left: -74px;
+}
+
+.festival-bat.from-right {
+  right: -74px;
 }
 
 .festival-bat svg {
   display: block;
   width: 100%;
   height: auto;
+  overflow: visible;
+  stroke: rgba(196, 181, 253, 0.3);
+  stroke-width: 0.6;
+}
+
+.festival-bat-wing {
+  fill: currentColor;
+  transform-origin: 36px 18px;
+  animation: festival-bat-flap 0.13s ease-in-out infinite alternate;
+}
+
+.festival-bat-wing-right {
+  animation-delay: 0.015s;
+}
+
+.festival-bat-body,
+.festival-bat-ear {
   fill: currentColor;
 }
 
-@keyframes festival-bat-fly {
+.festival-bat-eye {
+  fill: #f87171;
+}
+
+@keyframes festival-bat-startle {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0) scale(var(--bat-scale, 0.8));
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 0.95;
+  }
+
+  68% {
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: translate3d(var(--bat-x, 55vw), var(--bat-y, -80vh), 0) rotate(var(--bat-rot, 24deg)) scale(calc(var(--bat-scale, 0.8) * 1.16));
+    opacity: 0;
+  }
+}
+
+@keyframes festival-bat-flap {
   from {
-    transform: translateX(-120px) scale(var(--bat-scale, 1));
+    transform: scaleY(1);
   }
 
   to {
-    transform: translateX(calc(100vw + 120px)) scale(var(--bat-scale, 1));
+    transform: scaleY(0.18);
   }
 }
 

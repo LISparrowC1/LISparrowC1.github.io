@@ -66,11 +66,11 @@ npx hexo generate
 
 平时不会显示节日效果。在页面里输入下面任一关键词即可预览：
 
-- `cny`：春节灯笼
-- `halloween`：万圣节蝙蝠
+- `cny`：左侧两盏灯笼、灯笼旁烟花，首页打字机显示春节问候
+- `halloween`：左右两侧蝙蝠斜向上飞、快速拍翅，约 2 秒后消失
 - `christmas`：圣诞雪花
 - `festival`：依次循环三种节日
 - `festivaloff`：关闭节日效果
 
-也可以直接用 `?festival=cny`、`?festival=halloween`、`?festival=christmas` 打开。
+春节问候语在 `source/data/phrases.json` 的 `cnyGreetings` 里维护。也可以直接用 `?festival=cny`、`?festival=halloween`、`?festival=christmas` 打开。
 
