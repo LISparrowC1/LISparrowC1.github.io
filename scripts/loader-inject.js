@@ -5,6 +5,7 @@ hexo.extend.filter.register("after_render:html", function (str) {
     var fontLinks =
       '<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>' +
       '<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">' +
+      '<link rel="preload" as="font" type="font/woff2" href="/fonts/orbitron-900.woff2" crossorigin>' +
       '<link id="alist-font-ready" rel="stylesheet" media="print" onload="this.media=\'all\'" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/lxgwwenkai-regular.css">' +
       '<link rel="stylesheet" media="print" onload="this.media=\'all\'" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/lxgwwenkai-bold.css">';
     str = str.replace(/<\/head>/i, fontLinks + "</head>");
