@@ -3,6 +3,10 @@ html {
   background: #05050a;
 }
 
+html[data-user-color-scheme="light"] {
+  background: linear-gradient(180deg, #0e1b28 0%, #16283a 55%, #1b2f42 100%);
+}
+
 body {
   background: transparent !important;
 }
@@ -19,6 +23,14 @@ body {
   filter: blur(64px) saturate(1.25);
   opacity: 1;
   animation: alist-aurora-drift 26s ease-in-out infinite alternate;
+}
+
+html[data-user-color-scheme="light"] #alist-aurora {
+  background:
+    radial-gradient(42% 34% at 18% 10%, rgba(111, 158, 158, 0.3), transparent 70%),
+    radial-gradient(38% 30% at 82% 20%, rgba(78, 105, 128, 0.3), transparent 72%),
+    radial-gradient(48% 34% at 54% 90%, rgba(203, 183, 142, 0.17), transparent 72%);
+  filter: blur(64px) saturate(1.08);
 }
 
 #alist-starfield {
@@ -63,6 +75,10 @@ html.alist-home #banner::before {
   transition: filter 0.12s linear;
 }
 
+html[data-user-color-scheme="light"].alist-home #banner::before {
+  background-image: url("/img/banner-light.webp");
+}
+
 html.alist-home #banner .full-bg-img {
   position: absolute;
   inset: 0;
@@ -76,11 +92,23 @@ html.alist-home #banner .mask {
     linear-gradient(180deg, rgba(8, 8, 12, 0.2) 0%, rgba(8, 8, 12, 0.55) 58%, rgba(8, 8, 12, 0.92) 100%) !important;
 }
 
+html[data-user-color-scheme="light"].alist-home #banner .mask {
+  background:
+    radial-gradient(52% 46% at 22% 38%, rgba(111, 158, 158, 0.18), transparent 66%),
+    radial-gradient(45% 40% at 78% 52%, rgba(203, 183, 142, 0.1), transparent 68%),
+    linear-gradient(180deg, rgba(8, 18, 27, 0.18) 0%, rgba(8, 18, 27, 0.48) 55%, rgba(8, 18, 27, 0.94) 100%) !important;
+}
+
 #board,
 .board {
   background: rgba(13, 13, 20, 0.72) !important;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+}
+
+html[data-user-color-scheme="light"] #board,
+html[data-user-color-scheme="light"] .board {
+  background: rgba(20, 38, 52, 0.7) !important;
 }
 
 /* 首页主标题：蓝白紫网格渐变 */

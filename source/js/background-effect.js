@@ -32,6 +32,20 @@
   var ripples = [];
   var raf = 0;
 
+  function currentScheme() {
+    return document.documentElement.getAttribute("data-user-color-scheme") === "light" ? "light" : "dark";
+  }
+
+  function starColor(light) {
+    if (light) {
+      var lightPalette = ["231,243,245", "181,212,218", "153,190,199", "235,223,191", "126,165,175"];
+      return lightPalette[Math.floor(Math.random() * lightPalette.length)];
+    }
+    var violet = Math.random() > 0.72;
+    var cyan = !violet && Math.random() > 0.55;
+    return violet ? "196,181,253" : cyan ? "125,211,252" : "241,245,249";
+  }
+
   function resize() {
     w = window.innerWidth;
     h = window.innerHeight;
@@ -42,11 +56,10 @@
     canvas.style.height = h + "px";
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
+    var light = currentScheme() === "light";
     var count = Math.max(100, Math.min(260, Math.floor((w * h) / 9000)));
     stars = [];
     for (var i = 0; i < count; i++) {
-      var violet = Math.random() > 0.72;
-      var cyan = !violet && Math.random() > 0.55;
       stars.push({
         x: Math.random() * w,
         y: Math.random() * h,
@@ -55,7 +68,7 @@
         amp: 0.14 + Math.random() * 0.32,
         phase: Math.random() * Math.PI * 2,
         speed: 0.4 + Math.random() * 0.9,
-        color: violet ? "196,181,253" : cyan ? "125,211,252" : "241,245,249"
+        color: starColor(light)
       });
     }
   }
@@ -130,6 +143,15 @@
 
   resize();
   window.addEventListener("resize", resize);
+
+  if (window.MutationObserver) {
+    new MutationObserver(function () {
+      resize();
+    }).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-user-color-scheme"]
+    });
+  }
 
   if (reduced) {
     draw(0);

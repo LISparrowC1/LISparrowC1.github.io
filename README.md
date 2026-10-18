@@ -42,6 +42,14 @@ npx hexo generate
 
 页脚使用 Busuanzi 显示访客和访问量；加载期间和失败时保留计数区域，不再自动隐藏。国内外源会自动回退。
 
+## 白天 / 黑夜模式
+
+右上角的月亮/太阳按钮切换，默认黑夜。图标显示当前模式：黑夜是月亮，白天是太阳。
+
+- 黑夜：黑洞头图 `banner.webp`，紫蓝色星空与极光。
+- 白天：暮色星空头图 `banner-light.webp`，深蓝偏青的星空、浅色文字和面板，整体色调取自这张星空图。
+- 星点、极光和面板颜色都会跟随模式切换。
+
 ## 首页文案
 
 编辑 `source/data/phrases.json` 里的 `zh.quotes`、`zh.greetings`、`en.quotes`、`en.greetings`；节日问候分别在 `cnyGreetings`、`halloweenGreetings`、`christmasGreetings`（中英各一份）；两种语言的初始句分别在 `zh.initial` / `en.initial`。打字机只在点击时切换下一句，不会自动轮播。

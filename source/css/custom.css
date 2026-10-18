@@ -499,3 +499,106 @@ body.snake-playing {
     transition-duration: 0.001ms !important;
   }
 }
+
+/* 白天模式：太空1 的暮色星空 */
+html[data-user-color-scheme="light"] {
+  --body-bg-color: #142536;
+  --board-bg-color: #1c3042;
+  --text-color: #e7f0f2;
+  --sec-text-color: #9eb3be;
+  --post-text-color: #d8e5e9;
+  --post-heading-color: #f2f8f9;
+  --post-link-color: #a6d9d0;
+  --link-hover-color: #ecd6a4;
+  --link-hover-bg-color: rgba(127, 178, 175, 0.12);
+  --line-color: rgba(159, 202, 199, 0.18);
+  --navbar-bg-color: #08141f;
+  --navbar-text-color: #e7f0f2;
+  --subtitle-color: #f4fbfa;
+  --scrollbar-color: #36515c;
+  --scrollbar-hover-color: #587782;
+  --button-bg-color: #152a3b;
+  --button-hover-bg-color: #1d3548;
+  --highlight-bg-color: #0f2231;
+  --inlinecode-bg-color: rgba(127, 178, 175, 0.14);
+  --fold-title-color: #e7f0f2;
+  --fold-border-color: rgba(159, 202, 199, 0.18);
+  --alist-violet: #6fa9a5;
+  --alist-violet-2: #9fd3ca;
+  --alist-violet-3: #d4efe9;
+  --alist-black: #0d1b28;
+  --alist-panel: #142a3b;
+  --alist-line: rgba(159, 202, 199, 0.18);
+}
+
+html[data-user-color-scheme="light"] #navbar {
+  background: rgba(7, 18, 27, 0.74) !important;
+  border-bottom-color: rgba(159, 202, 199, 0.16);
+}
+
+html[data-user-color-scheme="light"] #navbar .navbar-brand {
+  color: #f2fbfa !important;
+}
+
+html[data-user-color-scheme="light"] #navbar .nav-link {
+  color: #d7e8ea !important;
+}
+
+html[data-user-color-scheme="light"] #navbar .nav-link:hover,
+html[data-user-color-scheme="light"] #navbar .nav-item.active .nav-link {
+  color: #d4efe9 !important;
+}
+
+html[data-user-color-scheme="light"] #navbar .nav-item.active .nav-link::after {
+  background: #6fa9a5;
+}
+
+html[data-user-color-scheme="light"] #banner {
+  background-color: #0e1b28;
+  background-image: url("/img/banner-light.webp") !important;
+}
+
+html[data-user-color-scheme="light"] #banner .mask {
+  background: linear-gradient(
+    180deg,
+    rgba(8, 18, 27, 0.2) 0%,
+    rgba(8, 18, 27, 0.5) 58%,
+    rgba(8, 18, 27, 0.94) 100%
+  ) !important;
+}
+
+html[data-user-color-scheme="light"] .banner-text .h1,
+html[data-user-color-scheme="light"] .banner-text .h2 {
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.7), 0 0 60px rgba(111, 158, 158, 0.3);
+}
+
+html[data-user-color-scheme="light"] .banner-text .subtitle {
+  color: #eef8f6 !important;
+}
+
+html[data-user-color-scheme="light"] #scroll-down {
+  color: #b8e4dc !important;
+}
+
+html[data-user-color-scheme="light"] ::selection {
+  background: rgba(111, 169, 165, 0.45);
+  color: #fff;
+}
+
+html[data-user-color-scheme="light"] .post-content a,
+html[data-user-color-scheme="light"] .about-content a,
+html[data-user-color-scheme="light"] .markdown-body a {
+  color: #a6d9d0;
+  border-bottom-color: rgba(166, 217, 208, 0.28);
+}
+
+html[data-user-color-scheme="light"] .post-content a:hover,
+html[data-user-color-scheme="light"] .about-content a:hover,
+html[data-user-color-scheme="light"] .markdown-body a:hover {
+  color: #ecd6a4;
+  border-bottom-color: rgba(236, 214, 164, 0.55);
+}
+
+html[data-user-color-scheme="light"] .alist-visitors {
+  color: #9eb3be;
+}
