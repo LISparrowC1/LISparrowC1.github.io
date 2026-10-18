@@ -21,6 +21,15 @@
     if (pvValue && !/[0-9]/.test(pvValue.textContent || "")) pvValue.textContent = "--";
   }
 
+  var localHost =
+    location.protocol === "file:" ||
+    /^(localhost|127\.0\.0\.1|0\.0\.0\.0|::1|\[::1\])$/.test(location.hostname || "");
+
+  if (localHost) {
+    reveal();
+    return;
+  }
+
   function filled() {
     return /[0-9]/.test((uvValue && uvValue.textContent) || "") || /[0-9]/.test((pvValue && pvValue.textContent) || "");
   }

@@ -1,3 +1,19 @@
+var execSync = require("child_process").execSync;
+
+function assetVersion() {
+  if (process.env.GITHUB_SHA) return process.env.GITHUB_SHA.slice(0, 12);
+  try {
+    return execSync("git rev-parse --short=12 HEAD", {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"]
+    }).trim();
+  } catch (error) {
+    return String(Date.now());
+  }
+}
+
+var cacheVersion = assetVersion();
+
 hexo.extend.filter.register("after_render:html", function (str) {
   if (!/<body[^>]*>/i.test(str)) return str;
 
@@ -20,7 +36,7 @@ hexo.extend.filter.register("after_render:html", function (str) {
       '<div class="alist-loader-sub">LOADING</div>' +
       "</div>" +
       "<noscript><style>#alist-loader{display:none!important}</style></noscript>" +
-      '<script src="/js/binary-loader.js"></script>' +
+      '<script src="/js/binary-loader.js?v=' + cacheVersion + '"></script>' +
       '<script>if(location.pathname==="/"||location.pathname==="/index.html"){document.documentElement.classList.add("alist-home")}</script>';
     str = str.replace(/<body([^>]*)>/i, "<body$1>" + loader);
   }
