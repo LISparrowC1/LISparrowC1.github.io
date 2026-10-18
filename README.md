@@ -48,7 +48,7 @@ npx hexo generate
 
 - 黑夜：黑洞头图 `banner.webp`，紫蓝色星空与极光；主标题是深蓝 → 青 → 白 → 紫。
 - 白天：暮色星空头图 `banner-light.webp`，深蓝偏青的星空、浅色文字和面板；主标题是蓝 → 青 → 白 → 薄荷 → 淡金。
-- 首页头图本身保持原图，不叠极光光幕；极光只在头图下方的页面背景里，滚动到内容区能看到，而且已经压低了强度。
+- 首页头图保持原图，不叠极光；极光恢复为最初的三团径向光晕，只出现在头图下方的页面背景，白天蓝绿/淡金，黑夜青/蓝/紫。
 
 ## 首页文案
 
@@ -70,7 +70,7 @@ npx hexo generate
 
 全站正文使用 LXGW WenKai（霞鹜文楷）。字体样式延迟加载，不阻塞首屏；未加载完时先显示系统字体，代码块保持等宽字体。
 
-首页主标题 `ALIST` 使用 Orbitron 900 科技字体，**本地自托管**在 `source/fonts/`，不依赖 Google Fonts；OFL 许可见 `source/fonts/OFL-Orbitron.txt`。
+首页主标题 `ALIST`、加载动画标题和导航栏品牌字使用 Orbitron 900，加载副标题用 Orbitron 700；字体**本地自托管**在 `source/fonts/`，不依赖 Google Fonts；OFL 许可见 `source/fonts/OFL-Orbitron.txt`。
 
 ## 节日预览
 
