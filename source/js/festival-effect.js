@@ -24,6 +24,10 @@
   var fireworksRaf = 0;
   var fireworksResize = null;
   var batsTimer = 0;
+  var halloweenTrigger = null;
+  var halloweenArmed = false;
+  var lastScrollY = 0;
+  var touchY = null;
 
   function diffDays(a, b) {
     return Math.round((a.getTime() - b.getTime()) / 86400000);
@@ -71,6 +75,12 @@
     }
     if (batsTimer) clearTimeout(batsTimer);
     batsTimer = 0;
+    if (halloweenTrigger) {
+      halloweenTrigger();
+      halloweenTrigger = null;
+    }
+    halloweenArmed = false;
+    touchY = null;
   }
 
   function hideFestival() {
@@ -114,8 +124,8 @@
     var colors = ["#fbbf24", "#f87171", "#f472b6", "#38bdf8", "#c4b5fd", "#fef3c7"];
 
     fireworksResize = function () {
-      w = Math.min(window.innerWidth * 0.5, 640);
-      h = Math.min(window.innerHeight * 0.62, 580);
+      w = Math.min(window.innerWidth * 0.45, 580);
+      h = Math.min(window.innerHeight * 0.5, 470);
       canvas.width = Math.floor(w * dpr);
       canvas.height = Math.floor(h * dpr);
       canvas.style.width = w + "px";
@@ -143,14 +153,15 @@
     }
 
     function launch() {
-      var targetX = w * (0.12 + Math.random() * 0.32);
-      var targetY = h * (0.08 + Math.random() * 0.26);
+      var targetX = w * (0.08 + Math.random() * 0.34);
+      var targetY = h * (0.06 + Math.random() * 0.2);
       rockets.push({
-        x: targetX + (Math.random() - 0.5) * w * 0.08,
-        y: h * 1.04,
+        x: targetX,
+        y: targetY + 40 + Math.random() * 50,
         targetX: targetX,
         targetY: targetY,
-        vy: -(6 + Math.random() * 3),
+        vy: -(8 + Math.random() * 4),
+        born: performance.now(),
         color: colors[Math.floor(Math.random() * colors.length)]
       });
     }
@@ -178,7 +189,7 @@
         ctx.beginPath();
         ctx.arc(rocket.x, rocket.y, 1.8, 0, Math.PI * 2);
         ctx.fill();
-        if (rocket.y <= rocket.targetY) {
+        if (rocket.y <= rocket.targetY || now - rocket.born > 180) {
           burst(rocket.targetX, rocket.targetY);
           rockets.splice(r, 1);
         }
@@ -217,8 +228,8 @@
 
     fireworksResize();
     window.addEventListener("resize", fireworksResize);
-    burst(w * 0.18, h * 0.2);
-    burst(w * 0.34, h * 0.34);
+    burst(w * 0.14, h * 0.16);
+    burst(w * 0.3, h * 0.28);
     fireworksRaf = requestAnimationFrame(frame);
   }
 
@@ -238,7 +249,7 @@
       '<circle class="festival-bat-eye" cx="38" cy="18.5" r="1"/>' +
       "</svg>";
 
-    for (var i = 0; i < 12; i++) {
+    for (var i = 0; i < 24; i++) {
       var left = i % 2 === 0;
       var bat = document.createElement("span");
       bat.className = "festival-bat " + (left ? "from-left" : "from-right");
@@ -257,7 +268,56 @@
       for (var j = 0; j < bats.length; j++) {
         if (bats[j].parentNode) bats[j].parentNode.removeChild(bats[j]);
       }
-    }, 2300);
+    }, 3200);
+  }
+
+  function armHalloweenBats() {
+    if (halloweenArmed) return;
+    halloweenArmed = true;
+    lastScrollY = window.scrollY || 0;
+
+    function removeTrigger() {
+      window.removeEventListener("wheel", onWheel, { passive: true });
+      window.removeEventListener("touchstart", onTouchStart, { passive: true });
+      window.removeEventListener("touchmove", onTouchMove, { passive: true });
+      window.removeEventListener("scroll", onScroll, { passive: true });
+      halloweenTrigger = null;
+      halloweenArmed = false;
+      touchY = null;
+    }
+
+    function trigger() {
+      if (!halloweenArmed) return;
+      removeTrigger();
+      createBats();
+    }
+
+    function onWheel(event) {
+      if (event.deltaY > 0) trigger();
+    }
+
+    function onTouchStart(event) {
+      if (event.touches && event.touches[0]) touchY = event.touches[0].clientY;
+    }
+
+    function onTouchMove(event) {
+      if (!event.touches || !event.touches[0]) return;
+      var y = event.touches[0].clientY;
+      if (touchY !== null && y < touchY - 5) trigger();
+      touchY = y;
+    }
+
+    function onScroll() {
+      var y = window.scrollY || 0;
+      if (y > lastScrollY + 4) trigger();
+      lastScrollY = y;
+    }
+
+    window.addEventListener("wheel", onWheel, { passive: true });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
+    halloweenTrigger = removeTrigger;
   }
 
   function createSnow() {
@@ -334,7 +394,7 @@
       createFireworks();
     }
     if (type === "halloween") {
-      createBats();
+      armHalloweenBats();
     }
     if (type === "christmas") {
       if (!reduced) createSnow();

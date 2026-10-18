@@ -24,3 +24,29 @@ Hexo + Fluid，部署在 GitHub Pages。深色底、蓝紫强调色，首页头�
 ## 找到我
 
 GitHub：<https://github.com/LISparrowC1>
+
+<div class="alist-about-en" hidden>
+
+## Hello
+
+I'm LI_SparrowC1. I build small tools and fun things. This site is where I keep project notes and experiments.
+
+## What I'm building
+
+- **IsmoType**: a test with two perspectives. 358 questions, looking at both personality type and intellectual coordinates. [Try it](https://lisparrowc1.github.io/ismotype_test/) · [Source](https://github.com/LISparrowC1/ismotype_test)
+- **TerrariaMapReveal**: a map-reveal and save-cleanup tool for Terraria 1.4.5. [Source](https://github.com/LISparrowC1/TerrariaMapReveal)
+
+## This site
+
+Built with Hexo + Fluid and deployed on GitHub Pages. Dark background, blue-violet accents, and an Interstellar black-hole banner. Snow, custom cursor, click hearts, mouse trail, and the title easter egg are all hand-written scripts.
+
+## Easter egg
+
+Type `alist` to summon a snake that crawls over the page. Use the arrow keys or WASD to move, eat the text, and press Esc to quit.
+
+## Find me
+
+GitHub: <https://github.com/LISparrowC1>
+
+</div>
+

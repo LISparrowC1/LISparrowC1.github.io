@@ -150,8 +150,35 @@
     else if (path.indexOf("/about") === 0) pageKey = "page.about";
     else if (path.indexOf("/404") !== -1) pageKey = "page.404";
     if (!pageKey) return;
+    var parsedTitle = document.title.split(" · ");
+    var siteTitle = parsedTitle.length > 1 ? parsedTitle[parsedTitle.length - 1] : "ALIST";
+    document.title = t(pageKey) + " · " + siteTitle;
+    var subtitle = document.querySelector("#banner #subtitle");
+    if (subtitle) {
+      subtitle.textContent = t(pageKey);
+      return;
+    }
     var heading = document.querySelector("#banner .h2");
     if (heading && !heading.querySelector("#subtitle")) heading.textContent = t(pageKey);
+  }
+
+  function translateAbout() {
+    var intro = document.querySelector(".about-intro");
+    if (intro) {
+      intro.textContent = lang === "en"
+        ? "I build small tools and fun things."
+        : "写点小工具，也做点好玩的东西。";
+    }
+
+    var body = document.querySelector(".about-content .markdown-body");
+    if (!body) return;
+    var english = body.querySelector(".alist-about-en");
+    if (!english) return;
+    var children = Array.prototype.slice.call(body.children);
+    for (var i = 0; i < children.length; i++) {
+      if (children[i] !== english) children[i].hidden = lang === "en";
+    }
+    english.hidden = lang !== "en";
   }
 
   function translateFooter() {
@@ -314,6 +341,7 @@
     translateCounts();
     translatePostUI();
     translateDates();
+    translateAbout();
     translateCustomText();
     translateSwitches();
     try {
