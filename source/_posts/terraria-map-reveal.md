@@ -13,10 +13,14 @@ tags:
 
 <!-- more -->
 
+![TerrariaMapReveal 封面](/img/projects/terraria-cover.webp)
+
 ## 两个功能
 
 - **点亮地图**：读取 `.wld` 世界文件，生成一张全亮地图写进 `.map`。矿脉、洞穴、生物群系、浮空岛、地狱都会按真实地形出现。
 - **清理存档**：列出人物、地图、备份的占用，删除时一律进 Windows 回收站，删错了可以还原。世界文件 `.wld` 不在清理范围。
+
+![同一张地图，点亮前 / 点亮后](/img/projects/terraria-map.webp)
 
 ## 怎么用
 
