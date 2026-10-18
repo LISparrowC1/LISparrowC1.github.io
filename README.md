@@ -44,7 +44,7 @@ npx hexo generate
 
 ## 首页文案
 
-编辑 `source/data/phrases.json` 里的 `zh.quotes`、`zh.greetings`、`en.quotes`、`en.greetings`；两种语言的初始句分别在 `zh.initial` / `en.initial`。打字机只在点击时切换下一句，不会自动轮播。
+编辑 `source/data/phrases.json` 里的 `zh.quotes`、`zh.greetings`、`en.quotes`、`en.greetings`；节日问候分别在 `cnyGreetings`、`halloweenGreetings`、`christmasGreetings`（中英各一份）；两种语言的初始句分别在 `zh.initial` / `en.initial`。打字机只在点击时切换下一句，不会自动轮播。
 
 ## 中英文切换
 
@@ -67,8 +67,8 @@ npx hexo generate
 平时不会显示节日效果。在页面里输入下面任一关键词即可预览：
 
 - `cny`：左侧两盏灯笼，烟花直接在灯笼旁引爆，首页打字机显示春节问候
-- `halloween`：第一次向下滚动时，左右两侧各 12 只蝙蝠斜向上飞、快速拍翅，约 3 秒后消失，只触发一次
-- `christmas`：圣诞雪花
+- `halloween`：第一次向下滚动时，左右两侧各 12 只蝙蝠斜向上飞、快速拍翅，约 3 秒后消失，只触发一次；首页显示万圣节问候
+- `christmas`：圣诞雪花；首页显示圣诞问候
 - `festival`：依次循环三种节日
 - `festivaloff`：关闭节日效果
 

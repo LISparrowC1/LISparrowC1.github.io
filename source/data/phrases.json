@@ -26,6 +26,16 @@
       "恭喜发财，岁岁平安。",
       "新年好，愿你所求皆如愿。",
       "岁序更新，喜乐安宁。"
+    ],
+    "halloweenGreetings": [
+      "万圣节快乐，今晚小心蝙蝠。",
+      "糖果还是捣蛋？",
+      "灯熄了，故事才开始。"
+    ],
+    "christmasGreetings": [
+      "圣诞快乐，愿灯火与雪都温柔。",
+      "愿你的圣诞有热可可和好梦。",
+      "平安夜快乐，记得许愿。"
     ]
   },
   "en": {
@@ -55,6 +65,16 @@
       "Wishing you a joyful and prosperous new year.",
       "May the new year bring you peace and happiness.",
       "Good luck and good fortune in the new year."
+    ],
+    "halloweenGreetings": [
+      "Happy Halloween!",
+      "Trick or treat?",
+      "The night is young and the bats are out."
+    ],
+    "christmasGreetings": [
+      "Merry Christmas!",
+      "Wishing you a cozy and peaceful Christmas.",
+      "May your night be full of lights and snow."
     ]
   }
 }

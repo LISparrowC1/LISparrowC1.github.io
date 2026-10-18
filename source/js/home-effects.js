@@ -55,6 +55,16 @@
         "恭喜发财，岁岁平安。",
         "新年好，愿你所求皆如愿。",
         "岁序更新，喜乐安宁。"
+      ],
+      halloweenGreetings: [
+        "万圣节快乐，今晚小心蝙蝠。",
+        "糖果还是捣蛋？",
+        "灯熄了，故事才开始。"
+      ],
+      christmasGreetings: [
+        "圣诞快乐，愿灯火与雪都温柔。",
+        "愿你的圣诞有热可可和好梦。",
+        "平安夜快乐，记得许愿。"
       ]
     },
     en: {
@@ -74,6 +84,16 @@
         "Wishing you a joyful and prosperous new year.",
         "May the new year bring you peace and happiness.",
         "Good luck and good fortune in the new year."
+      ],
+      halloweenGreetings: [
+        "Happy Halloween!",
+        "Trick or treat?",
+        "The night is young and the bats are out."
+      ],
+      christmasGreetings: [
+        "Merry Christmas!",
+        "Wishing you a cozy and peaceful Christmas.",
+        "May your night be full of lights and snow."
       ]
     }
   };
@@ -86,7 +106,7 @@
   var current = content.initial;
   var lyricsMode = false;
   var typing = false;
-  var cnyActive = false;
+  var currentFestival = "none";
 
   fetch("/data/phrases.json", { cache: "no-store" })
     .then(function (response) {
@@ -97,7 +117,7 @@
       if (data.zh && Array.isArray(data.zh.quotes)) phrases.zh = data.zh;
       if (data.en && Array.isArray(data.en.quotes)) phrases.en = data.en;
       content = phrases[lang] || phrases.zh;
-      if (!lyricsMode && !typing) typeText(cnyActive ? pickPhrase() : content.initial);
+      if (!lyricsMode && !typing) typeText(currentFestival !== "none" ? pickPhrase() : content.initial);
     })
     .catch(function () {
       // Keep the built-in fallback when the data file is unavailable.
@@ -146,12 +166,16 @@
   }
 
   function pickPhrase() {
-    if (cnyActive && content.cnyGreetings && content.cnyGreetings.length) {
-      var cnyPool = content.cnyGreetings;
-      var cnyNext = cnyPool[Math.floor(Math.random() * cnyPool.length)];
-      if (cnyNext === current) cnyNext = cnyPool[(cnyPool.indexOf(cnyNext) + 1) % cnyPool.length];
-      current = cnyNext;
-      return cnyNext;
+    if (currentFestival !== "none") {
+      var festivalPool = content[currentFestival + "Greetings"];
+      if (festivalPool && festivalPool.length) {
+        var festivalNext = festivalPool[Math.floor(Math.random() * festivalPool.length)];
+        if (festivalNext === current) {
+          festivalNext = festivalPool[(festivalPool.indexOf(festivalNext) + 1) % festivalPool.length];
+        }
+        current = festivalNext;
+        return festivalNext;
+      }
     }
     var pool = content.quotes.slice();
     pool.push(greeting());
@@ -192,12 +216,12 @@
   });
 
   window.addEventListener("alist:festival", function (event) {
-    var next = event.detail === "cny";
-    if (next === cnyActive) return;
-    cnyActive = next;
+    var next = event.detail || "none";
+    if (next === currentFestival) return;
+    currentFestival = next;
     if (lyricsMode) return;
     typing = false;
-    typeText(cnyActive ? pickPhrase() : content.initial);
+    typeText(currentFestival !== "none" ? pickPhrase() : content.initial);
   });
 
   window.addEventListener("alist:lang", function (event) {
@@ -207,7 +231,7 @@
     lyricsMode = false;
     subtitle.classList.remove("is-lyrics");
     typing = false;
-    typeText(cnyActive ? pickPhrase() : content.initial);
+    typeText(currentFestival !== "none" ? pickPhrase() : content.initial);
   });
 
   window.addEventListener("alist:lyrics", function (event) {
@@ -223,7 +247,7 @@
       lyricsMode = false;
       subtitle.classList.remove("is-lyrics");
       typing = false;
-      typeText(cnyActive ? pickPhrase() : content.initial);
+      typeText(currentFestival !== "none" ? pickPhrase() : content.initial);
     }
   });
 
