@@ -77,14 +77,26 @@ async function readMetadata(file) {
 
   const separator = stem.lastIndexOf(" - ");
   if (separator > 0) {
-    if (!title) title = stem.slice(0, separator).trim();
-    if (!artist) artist = stem.slice(separator + 3).trim();
+    const left = stem.slice(0, separator).trim();
+    const right = stem.slice(separator + 3).trim();
+    const hasHanLeft = /[\u3400-\u9fff]/.test(left);
+    const hasHanRight = /[\u3400-\u9fff]/.test(right);
+    if (hasHanLeft && hasHanRight) {
+      if (!artist) artist = left;
+      if (!title) title = right;
+    } else {
+      if (!title) title = left;
+      if (!artist) artist = right;
+    }
   }
   if (!title) title = stem;
-  if (!artist) artist = "-";
+
+  const clean = (value) => String(value).replace(/\s*mp3\s*$/i, "").trim();
+  title = clean(title) || "无";
+  artist = artist === "-" ? "-" : clean(artist) || "-";
   if (artist !== "-") artist = artist.replace(/,(?=\S)/g, ", ");
 
-  return { title: title || "无", artist: artist || "-" };
+  return { title, artist };
 }
 
 async function addTrack(file, key, base, result) {
