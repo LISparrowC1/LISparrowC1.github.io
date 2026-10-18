@@ -99,7 +99,8 @@
   };
 
   var phrases = { zh: fallback.zh, en: fallback.en };
-  var lang = localStorage.getItem("alist-lang") || (document.documentElement.lang === "en" ? "en" : "zh");
+  var savedLang = localStorage.getItem("alist-lang");
+  var lang = savedLang === "en" || savedLang === "zh" ? savedLang : (document.documentElement.lang === "en" ? "en" : "zh");
   var content = phrases[lang] || phrases.zh;
   var token = 0;
   var typeTimer = 0;

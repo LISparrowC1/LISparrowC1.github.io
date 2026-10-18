@@ -11,7 +11,7 @@ static_prefix:
 
 dark_mode:
   enable: true
-  default: dark
+  default: auto
 
 color:
   body_bg_color: "#f5f6fa"

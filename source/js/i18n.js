@@ -85,8 +85,14 @@
   };
 
   var dict = { zh: fallback.zh, en: fallback.en };
-  var lang = localStorage.getItem(STORAGE_KEY) || "zh";
-  if (lang !== "en") lang = "zh";
+
+  function detectBrowserLang() {
+    var preferred = (navigator.languages && navigator.languages[0]) || navigator.language || "";
+    return /^zh(-|_|$)/i.test(preferred) ? "zh" : "en";
+  }
+
+  var savedLang = localStorage.getItem(STORAGE_KEY);
+  var lang = savedLang === "zh" || savedLang === "en" ? savedLang : detectBrowserLang();
 
   var switchEl = null;
   var mobileSwitch = null;
