@@ -673,6 +673,12 @@ html.alist-home #subtitle.is-lyrics::after {
   color: var(--alist-violet-2);
 }
 
+.alist-visitors .alist-visitor-badge {
+  height: 20px;
+  width: auto;
+  vertical-align: middle;
+}
+
 @media (max-width: 768px) {
   #alist-music {
     bottom: 14px;
