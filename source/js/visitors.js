@@ -65,30 +65,7 @@
     document.body.appendChild(script);
   }
 
-  function showFallback() {
-    if (settled || filled()) return;
-    settled = true;
-    var box = document.querySelector(".alist-visitors");
-    if (!box) return;
-    var label = (document.documentElement.lang || "").indexOf("en") === 0 ? "Visitors" : "访问";
-    var img = document.createElement("img");
-    img.className = "alist-visitor-badge";
-    img.alt = label;
-    img.decoding = "async";
-    img.src =
-      "https://api.visitorbadge.io/api/visitors?path=LISparrowC1.github.io&label=" +
-      encodeURIComponent(label) +
-      "&countColor=%238b5cf6&labelColor=%23222b36&style=flat";
-    img.onerror = function () {
-      box.textContent = "--";
-    };
-    box.innerHTML = '<i class="iconfont icon-user-fill"></i>';
-    box.appendChild(img);
-  }
-
   tryNext();
-
-  setTimeout(showFallback, 6000);
 
   setTimeout(function () {
     if (!filled()) reveal();
