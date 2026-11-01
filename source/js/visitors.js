@@ -65,7 +65,64 @@
     document.body.appendChild(script);
   }
 
+  function parseBadgeCount(svg) {
+    var match = /VISITORS:\s*([\d,]+)/i.exec(svg || "");
+    return match ? match[1] : null;
+  }
+
+  function fetchBadge(path) {
+    return fetch(
+      "https://api.visitorbadge.io/api/visitors?path=" + encodeURIComponent(path),
+      { cache: "no-store" }
+    )
+      .then(function (response) {
+        return response.ok ? response.text() : "";
+      })
+      .then(parseBadgeCount)
+      .catch(function () {
+        return null;
+      });
+  }
+
+  function setCount(el, value) {
+    if (el && value) el.textContent = value;
+  }
+
+  function showFallback() {
+    if (settled || filled()) return;
+    settled = true;
+
+    fetchBadge("LISparrowC1.github.io").then(function (count) {
+      setCount(pvValue, count);
+    });
+
+    var uvKey = "alist-visitor-uv";
+    var cachedUv = null;
+    try {
+      cachedUv = localStorage.getItem(uvKey);
+    } catch (error) {
+      cachedUv = null;
+    }
+
+    if (cachedUv) {
+      setCount(uvValue, cachedUv);
+      return;
+    }
+
+    fetchBadge("LISparrowC1.github.io/uv").then(function (count) {
+      if (!count) return;
+      setCount(uvValue, count);
+      try {
+        localStorage.setItem(uvKey, count);
+      } catch (error) {
+        // Ignore storage restrictions.
+      }
+    });
+  }
+
   tryNext();
+
+  setTimeout(showFallback, 6000);
 
   setTimeout(function () {
     if (!filled()) reveal();
