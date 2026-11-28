@@ -46,22 +46,63 @@
   var root = document.createElement("div");
   root.id = "alist-music";
   root.hidden = true;
-  root.innerHTML =
-    '<button class="alist-music-skip" id="alist-music-prev" type="button" aria-label="' + tr("prev") + '">‹</button>' +
-    '<button id="alist-music-toggle" type="button" aria-label="' + tr("play") + '"><span class="alist-music-icon">▶</span></button>' +
-    '<button class="alist-music-skip" id="alist-music-next" type="button" aria-label="' + tr("next") + '">›</button>' +
-    '<div class="alist-music-info"><strong id="alist-music-title">' + tr("none") + '</strong><span id="alist-music-artist">-</span></div>' +
-    '<div class="alist-music-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></div>' +
-    '<input id="alist-music-volume" type="range" min="0" max="100" value="50" aria-label="Volume">';
-  document.body.appendChild(root);
 
-  var playButton = document.getElementById("alist-music-toggle");
-  var icon = playButton.querySelector(".alist-music-icon");
-  var prevButton = document.getElementById("alist-music-prev");
-  var nextButton = document.getElementById("alist-music-next");
-  var titleEl = document.getElementById("alist-music-title");
-  var artistEl = document.getElementById("alist-music-artist");
-  var volume = document.getElementById("alist-music-volume");
+  var prevButton = document.createElement("button");
+  prevButton.className = "alist-music-skip";
+  prevButton.id = "alist-music-prev";
+  prevButton.type = "button";
+  prevButton.setAttribute("aria-label", tr("prev"));
+  prevButton.textContent = "‹";
+
+  var playButton = document.createElement("button");
+  playButton.id = "alist-music-toggle";
+  playButton.type = "button";
+  playButton.setAttribute("aria-label", tr("play"));
+  var icon = document.createElement("span");
+  icon.className = "alist-music-icon";
+  icon.textContent = "▶";
+  playButton.appendChild(icon);
+
+  var nextButton = document.createElement("button");
+  nextButton.className = "alist-music-skip";
+  nextButton.id = "alist-music-next";
+  nextButton.type = "button";
+  nextButton.setAttribute("aria-label", tr("next"));
+  nextButton.textContent = "›";
+
+  var info = document.createElement("div");
+  info.className = "alist-music-info";
+  var titleEl = document.createElement("strong");
+  titleEl.id = "alist-music-title";
+  titleEl.textContent = tr("none");
+  var artistEl = document.createElement("span");
+  artistEl.id = "alist-music-artist";
+  artistEl.textContent = "-";
+  info.appendChild(titleEl);
+  info.appendChild(artistEl);
+
+  var eq = document.createElement("div");
+  eq.className = "alist-music-eq";
+  eq.setAttribute("aria-hidden", "true");
+  for (var eqIndex = 0; eqIndex < 4; eqIndex++) {
+    eq.appendChild(document.createElement("i"));
+  }
+
+  var volume = document.createElement("input");
+  volume.id = "alist-music-volume";
+  volume.type = "range";
+  volume.min = "0";
+  volume.max = "100";
+  volume.value = "50";
+  volume.setAttribute("aria-label", "Volume");
+
+  root.appendChild(prevButton);
+  root.appendChild(playButton);
+  root.appendChild(nextButton);
+  root.appendChild(info);
+  root.appendChild(eq);
+  root.appendChild(volume);
+  document.body.appendChild(root);
 
   var switchEl = null;
   var nav = document.querySelector("#navbar .navbar-nav");
@@ -75,7 +116,10 @@
     link.title = tr("switch");
     link.setAttribute("aria-label", tr("switch"));
     link.setAttribute("aria-pressed", "false");
-    link.innerHTML = '<span class="alist-music-switch-icon">♪</span>';
+    var switchIcon = document.createElement("span");
+    switchIcon.className = "alist-music-switch-icon";
+    switchIcon.textContent = "♪";
+    link.appendChild(switchIcon);
     item.appendChild(link);
     var searchItem = nav.querySelector("#search-btn");
     nav.insertBefore(item, searchItem || null);
@@ -86,10 +130,17 @@
   mobileSwitch.href = "javascript:;";
   mobileSwitch.className = "alist-music-switch-mobile";
   mobileSwitch.setAttribute("aria-label", tr("switch"));
-  mobileSwitch.innerHTML =
-    '<div class="mobile-grid-item"><span class="alist-music-switch-icon">♪</span><span class="alist-music-switch-label">' +
-    tr("music") +
-    "</span></div>";
+  var mobileItem = document.createElement("div");
+  mobileItem.className = "mobile-grid-item";
+  var mobileIcon = document.createElement("span");
+  mobileIcon.className = "alist-music-switch-icon";
+  mobileIcon.textContent = "♪";
+  var mobileLabel = document.createElement("span");
+  mobileLabel.className = "alist-music-switch-label";
+  mobileLabel.textContent = tr("music");
+  mobileItem.appendChild(mobileIcon);
+  mobileItem.appendChild(mobileLabel);
+  mobileSwitch.appendChild(mobileItem);
   var mobileMenu = document.querySelector("#mobile-grid-menu .mobile-grid-menu-inner");
   if (mobileMenu) mobileMenu.appendChild(mobileSwitch);
 

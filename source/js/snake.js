@@ -343,15 +343,44 @@
     updateHud();
   }
 
+  function hudText(text) {
+    return document.createTextNode(text);
+  }
+
+  function hudStrong(value) {
+    var strong = document.createElement("b");
+    strong.textContent = String(value);
+    return strong;
+  }
+
+  function hudKey(text) {
+    var key = document.createElement("span");
+    key.className = "snake-key";
+    key.textContent = text;
+    return key;
+  }
+
+  function setHud(parts) {
+    hud.textContent = "";
+    for (var hudIndex = 0; hudIndex < parts.length; hudIndex++) {
+      hud.appendChild(parts[hudIndex]);
+    }
+  }
+
   function die() {
     if (dead) return;
     dead = true;
     if (hud) {
       hud.classList.remove("is-win");
       hud.classList.add("is-dead");
-      hud.innerHTML =
-        "撞到自己了 · 吃掉 <b>" + score + "</b> 段 · " +
-        '<span class="snake-key">R 重开</span> · <span class="snake-key">ESC 退出</span>';
+      setHud([
+        hudText("撞到自己了 · 吃掉 "),
+        hudStrong(score),
+        hudText(" 段 · "),
+        hudKey("R 重开"),
+        hudText(" · "),
+        hudKey("ESC 退出")
+      ]);
     }
   }
 
@@ -430,13 +459,27 @@
     if (won) {
       hud.classList.remove("is-dead");
       hud.classList.add("is-win");
-      hud.innerHTML = '页面已吃空 · <span class="snake-key">R 重开</span> · <span class="snake-key">ESC 退出</span>';
+      setHud([
+        hudText("页面已吃空 · "),
+        hudKey("R 重开"),
+        hudText(" · "),
+        hudKey("ESC 退出")
+      ]);
       return;
     }
     hud.classList.remove("is-win", "is-dead");
-    hud.innerHTML =
-      "吃掉 <b>" + score + "</b> · 长度 <b>" + snake.length + "</b> · 剩余 <b>" + remaining +
-      '</b> · <span class="snake-key">R 重开</span> · <span class="snake-key">ESC 退出</span>';
+    setHud([
+      hudText("吃掉 "),
+      hudStrong(score),
+      hudText(" · 长度 "),
+      hudStrong(snake.length),
+      hudText(" · 剩余 "),
+      hudStrong(remaining),
+      hudText(" · "),
+      hudKey("R 重开"),
+      hudText(" · "),
+      hudKey("ESC 退出")
+    ]);
   }
 
   function roundRect(c, x, y, w, h, r) {

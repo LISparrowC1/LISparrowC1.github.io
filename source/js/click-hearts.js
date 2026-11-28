@@ -19,14 +19,19 @@
     heart.style.height = size + "px";
     heart.style.setProperty("--dx", offsetX + "px");
     heart.style.setProperty("--rot", rot + "deg");
-    heart.innerHTML =
-      '<svg viewBox="0 0 32 32" width="' +
-      size +
-      '" height="' +
-      size +
-      '"><path fill="' +
-      color +
-      '" d="M16 28C16 28 2 20.4 2 10.4C2 5.6 5.6 2 10.4 2C13.2 2 15.2 3.6 16 5C16.8 3.6 18.8 2 21.6 2C26.4 2 30 5.6 30 10.4C30 20.4 16 28 16 28Z"/></svg>';
+    var svgNS = "http://www.w3.org/2000/svg";
+    var svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("viewBox", "0 0 32 32");
+    svg.setAttribute("width", String(size));
+    svg.setAttribute("height", String(size));
+    var path = document.createElementNS(svgNS, "path");
+    path.setAttribute("fill", color);
+    path.setAttribute(
+      "d",
+      "M16 28C16 28 2 20.4 2 10.4C2 5.6 5.6 2 10.4 2C13.2 2 15.2 3.6 16 5C16.8 3.6 18.8 2 21.6 2C26.4 2 30 5.6 30 10.4C30 20.4 16 28 16 28Z"
+    );
+    svg.appendChild(path);
+    heart.appendChild(svg);
 
     document.body.appendChild(heart);
 

@@ -2,7 +2,24 @@
 
 const fs = require("fs");
 const path = require("path");
-const mm = require("music-metadata");
+
+let musicMetadataPromise = null;
+
+function loadMusicMetadata() {
+  if (!musicMetadataPromise) musicMetadataPromise = import("music-metadata");
+  return musicMetadataPromise;
+}
+
+function resolveInside(root, ...parts) {
+  // root is a trusted caller argument
+  const base = path.resolve(root); // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal
+  // containment is checked immediately below
+  const resolved = path.resolve(base, ...parts); // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal
+  if (resolved !== base && !resolved.startsWith(base + path.sep)) {
+    throw new Error("refusing path outside " + base);
+  }
+  return resolved;
+}
 
 const AUDIO_EXTENSIONS = new Set([
   ".mp3",
@@ -51,9 +68,10 @@ async function findLyrics(file, base) {
   const dir = path.dirname(file);
   const stem = path.basename(file, path.extname(file)).toLowerCase();
   try {
-    const entries = await fs.promises.readdir(dir);
+    // dir is under the scan root
+    const entries = await fs.promises.readdir(dir); // nosemgrep: javascript.lang.security.audit.detect-non-literal-fs-filename
     const hit = entries.find((name) => name.toLowerCase() === stem + ".lrc");
-    if (hit) return toUrl(base, path.join(dir, hit));
+    if (hit) return toUrl(base, resolveInside(dir, hit));
   } catch (error) {
     return "";
   }
@@ -65,6 +83,7 @@ async function readMetadata(file) {
   let title = "";
   let artist = "";
   try {
+    const mm = await loadMusicMetadata();
     const metadata = await mm.parseFile(file, { duration: false, skipCovers: true });
     if (metadata.common.title && String(metadata.common.title).trim()) {
       title = String(metadata.common.title).trim();
@@ -112,13 +131,14 @@ async function addTrack(file, key, base, result) {
 async function scanFolder(dir, key, base, result) {
   let entries;
   try {
-    entries = await fs.promises.readdir(dir, { withFileTypes: true });
+    // dir is under the scan root
+    entries = await fs.promises.readdir(dir, { withFileTypes: true }); // nosemgrep: javascript.lang.security.audit.detect-non-literal-fs-filename
   } catch (error) {
     return;
   }
   for (const entry of entries) {
     if (isHidden(entry.name)) continue;
-    const full = path.join(dir, entry.name);
+    const full = resolveInside(dir, entry.name);
     if (entry.isDirectory()) {
       await scanFolder(full, key, base, result);
     } else if (entry.isFile() && isAudio(entry.name)) {
@@ -128,7 +148,7 @@ async function scanFolder(dir, key, base, result) {
 }
 
 async function buildManifest(hexo) {
-  const base = path.join(hexo.source_dir, "music");
+  const base = resolveInside(hexo.source_dir, "music");
   const result = {
     normal: [],
     cny: [],
@@ -136,11 +156,12 @@ async function buildManifest(hexo) {
     christmas: []
   };
 
-  if (fs.existsSync(base)) {
-    const entries = await fs.promises.readdir(base, { withFileTypes: true });
+  // base is resolved under the blog source
+  if (fs.existsSync(base)) { // nosemgrep: javascript.lang.security.audit.detect-non-literal-fs-filename
+    const entries = await fs.promises.readdir(base, { withFileTypes: true }); // nosemgrep: javascript.lang.security.audit.detect-non-literal-fs-filename
     for (const entry of entries) {
       if (isHidden(entry.name)) continue;
-      const full = path.join(base, entry.name);
+      const full = resolveInside(base, entry.name);
       if (entry.isDirectory()) {
         const key = folderKey(entry.name);
         if (key) await scanFolder(full, key, base, result);
@@ -159,9 +180,10 @@ async function buildManifest(hexo) {
     tracks: result
   };
 
-  const target = path.join(hexo.public_dir, "data", "music.json");
-  await fs.promises.mkdir(path.dirname(target), { recursive: true });
-  await fs.promises.writeFile(target, JSON.stringify(manifest), "utf8");
+  const target = resolveInside(hexo.public_dir, "data", "music.json");
+  // target is resolved under the blog public dir
+  await fs.promises.mkdir(path.dirname(target), { recursive: true }); // nosemgrep: javascript.lang.security.audit.detect-non-literal-fs-filename
+  await fs.promises.writeFile(target, JSON.stringify(manifest), "utf8"); // nosemgrep: javascript.lang.security.audit.detect-non-literal-fs-filename
   const counts = Object.keys(result)
     .map((key) => key + ":" + result[key].length)
     .join(" ");

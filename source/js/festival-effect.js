@@ -234,20 +234,22 @@
   }
 
   function createBats() {
-    var batSvg =
+    var batTemplate = new DOMParser().parseFromString(
       '<svg viewBox="0 0 72 36" aria-hidden="true">' +
-      '<g class="festival-bat-wing festival-bat-wing-left">' +
-      '<path d="M35 18 C27 8 16 3 2 7 C8 11 11 16 9 22 C11 21 14 20 17 20 C23 15 29 17 35 18 Z"/>' +
-      "</g>" +
-      '<g class="festival-bat-wing festival-bat-wing-right">' +
-      '<path d="M37 18 C45 8 56 3 70 7 C64 11 61 16 63 22 C61 21 58 20 55 20 C49 15 43 17 37 18 Z"/>' +
-      "</g>" +
-      '<ellipse class="festival-bat-body" cx="36" cy="19" rx="5" ry="4"/>' +
-      '<path class="festival-bat-ear" d="M32 15 L30 9 L36 14 Z"/>' +
-      '<path class="festival-bat-ear" d="M40 15 L42 9 L36 14 Z"/>' +
-      '<circle class="festival-bat-eye" cx="34" cy="18.5" r="1"/>' +
-      '<circle class="festival-bat-eye" cx="38" cy="18.5" r="1"/>' +
-      "</svg>";
+        '<g class="festival-bat-wing festival-bat-wing-left">' +
+        '<path d="M35 18 C27 8 16 3 2 7 C8 11 11 16 9 22 C11 21 14 20 17 20 C23 15 29 17 35 18 Z"/>' +
+        "</g>" +
+        '<g class="festival-bat-wing festival-bat-wing-right">' +
+        '<path d="M37 18 C45 8 56 3 70 7 C64 11 61 16 63 22 C61 21 58 20 55 20 C49 15 43 17 37 18 Z"/>' +
+        "</g>" +
+        '<ellipse class="festival-bat-body" cx="36" cy="19" rx="5" ry="4"/>' +
+        '<path class="festival-bat-ear" d="M32 15 L30 9 L36 14 Z"/>' +
+        '<path class="festival-bat-ear" d="M40 15 L42 9 L36 14 Z"/>' +
+        '<circle class="festival-bat-eye" cx="34" cy="18.5" r="1"/>' +
+        '<circle class="festival-bat-eye" cx="38" cy="18.5" r="1"/>' +
+        "</svg>",
+      "image/svg+xml"
+    ).documentElement;
 
     for (var i = 0; i < 24; i++) {
       var left = i % 2 === 0;
@@ -258,7 +260,7 @@
       bat.style.setProperty("--bat-y", (-68 - Math.random() * 30).toFixed(1) + "vh");
       bat.style.setProperty("--bat-rot", (left ? 24 : -24) + Math.random() * 10 + "deg");
       bat.style.setProperty("--bat-scale", (0.6 + Math.random() * 0.65).toFixed(2));
-      bat.innerHTML = batSvg;
+      bat.appendChild(document.importNode(batTemplate, true));
       layer.appendChild(bat);
     }
 
