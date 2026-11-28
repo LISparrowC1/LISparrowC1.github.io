@@ -29,6 +29,8 @@ npx hexo generate
 
 `post_asset_folder` 已开启，Hexo 会把图片复制到 `public/<文章永久链接>/images/`，文章 URL 不变。不要再用 `source/img/projects/` 放项目文章配图，也不要写 `/img/...` 的绝对路径。
 
+分类用 `项目` / `技术` / `生活`；草稿在 front matter 写 `published: false`，Hexo 不生成，审核后改成 `true` 再推送。
+
 ## 音乐
 
 把音频直接放进对应文件夹即可，构建时会自动扫描并生成播放清单，**不需要编辑任何 JSON**：
