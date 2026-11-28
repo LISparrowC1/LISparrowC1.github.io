@@ -20,7 +20,7 @@ html {
 }
 
 html[data-user-color-scheme="light"] {
-  background: linear-gradient(180deg, #0e1b28 0%, #16283a 55%, #1b2f42 100%);
+  background: #142536;
 }
 
 body {
@@ -111,7 +111,7 @@ html[data-user-color-scheme="light"].alist-home #banner .mask {
   background:
     radial-gradient(52% 46% at 22% 38%, rgba(111, 158, 158, 0.18), transparent 66%),
     radial-gradient(45% 40% at 78% 52%, rgba(203, 183, 142, 0.1), transparent 68%),
-    linear-gradient(180deg, rgba(8, 18, 27, 0.18) 0%, rgba(8, 18, 27, 0.48) 55%, rgba(8, 18, 27, 0.94) 100%) !important;
+    linear-gradient(180deg, rgba(8, 18, 27, 0.18) 0%, rgba(8, 18, 27, 0.48) 55%, rgba(20, 38, 52, 1) 100%) !important;
 }
 
 #board,

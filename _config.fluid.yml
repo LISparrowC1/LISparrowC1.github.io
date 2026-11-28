@@ -184,7 +184,7 @@ code:
     line_number: false
     lib: "highlightjs"
     highlightjs:
-      style: "github"
+      style: "atom-one-dark"
       style_dark: "atom-one-dark"
 
 footer:
