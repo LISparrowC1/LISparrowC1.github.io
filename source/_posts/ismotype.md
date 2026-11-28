@@ -14,7 +14,7 @@ IsmoType 是一个纯前端的人格与思想倾向测试：358 道题，一次�
 
 <!-- more -->
 
-![IsmoType 封面](/img/projects/ismotype-cover.webp)
+![IsmoType 封面](images/cover.webp)
 
 ## 为什么做这个
 
@@ -28,7 +28,7 @@ IsmoType 是一个纯前端的人格与思想倾向测试：358 道题，一次�
 - **不编百分位**：没有常模时显示“暂无可比常模”，不造一个看起来很像百分位的数字。
 - **打平就多问一道**：某个维度恰好 50/50 时，先出一道二选一定向题，结果里不会出现“X”这种中间态。
 
-![IsmoType 测试界面](/img/projects/ismotype-ui.webp)
+![IsmoType 测试界面](images/ui.webp)
 
 ## 技术栈
 

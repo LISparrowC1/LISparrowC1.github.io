@@ -16,7 +16,7 @@ tags:
 
 <!-- more -->
 
-![NeteaseVault 封面](/img/projects/neteasevault-cover.webp)
+![NeteaseVault 封面](images/cover.webp)
 
 ## 为什么是归档，不是下载器
 
@@ -74,7 +74,7 @@ tags:
 
 七个列表因此不需要单独存「这首歌属于哪个列表」，全部由 SQL 谓词推导：
 
-![三条轴推导出七个列表](/img/projects/neteasevault-views.webp)
+![三条轴推导出七个列表](images/views.webp)
 
 两条配套规则：
 
@@ -83,7 +83,7 @@ tags:
 
 ## 一次下载经过什么
 
-![下载流水线](/img/projects/neteasevault-flow.webp)
+![下载流水线](images/flow.webp)
 
 1. **同步**：按云端顺序读全部曲目，记录顺序、收藏时间、时长、云端音质上限、可播状态。
 2. **找候选**：严格按设置里的通道顺序搜索或解析。同一首歌在一个通道里可能拿到多个候选，一个地址失效会自动换下一个，全部失败才走下一通道。

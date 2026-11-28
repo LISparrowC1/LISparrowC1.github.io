@@ -14,7 +14,7 @@ tags:
 
 <!-- more -->
 
-![dsh-loop-guard 封面](/img/projects/dsh-loop-guard-cover.webp)
+![dsh-loop-guard 封面](images/cover.webp)
 
 ## 三种“看起来还在工作”
 
@@ -26,7 +26,7 @@ tags:
 
 DSH 自带一个只检测“完全相同”工具调用的提醒，并且只建议模型停下。dsh-loop-guard 补的是更宽的那一段：近似重复、循环链、以及一直没有进展的回合。
 
-![三种失控与 guard 的拦截流程](/img/projects/dsh-flow.webp)
+![三种失控与 guard 的拦截流程](images/flow.webp)
 
 ## 它怎么判断
 

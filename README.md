@@ -21,6 +21,14 @@ npx hexo generate
 
 产物在 `public/`。推送到 `main` 后由 GitHub Actions 发布到 GitHub Pages。
 
+## 文章与图片
+
+- 文章：`source/_posts/<slug>.md`
+- 该文章的图片：`source/_posts/<slug>/images/`
+- 正文引用同一篇文章目录下的图片，写相对路径：`![说明](images/example.webp)`
+
+`post_asset_folder` 已开启，Hexo 会把图片复制到 `public/<文章永久链接>/images/`，文章 URL 不变。不要再用 `source/img/projects/` 放项目文章配图，也不要写 `/img/...` 的绝对路径。
+
 ## 音乐
 
 把音频直接放进对应文件夹即可，构建时会自动扫描并生成播放清单，**不需要编辑任何 JSON**：
